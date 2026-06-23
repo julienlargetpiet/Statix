@@ -927,6 +927,72 @@ tbody tr:nth-child(even) {
   border-radius: 0;
 }
 
+
+.code-tab-panel {
+  position: relative;
+  min-height: 220px;
+}
+
+.code-tab-panel .matrix-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+}
+
+.code-tab-panel .matrix-loader::after {
+  content: "";
+
+  width: 32px;
+  height: 32px;
+
+  border: 3px solid var(--border-soft);
+  border-top-color: var(--text-main);
+  border-radius: 50%;
+
+  animation: matrix-spin 0.8s linear infinite;
+}
+
+.code-tab-panel.loaded .matrix-loader {
+  display: none;
+}
+
+/* LONE IMG CONTAINER */
+
+.lone-img-container {
+  position: relative;
+  min-height: 200px;
+
+}
+
+.lone-img-container .matrix-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 220px;
+}
+
+.lone-img-container .matrix-loader::after {
+
+  content: "";
+
+  width: 32px;
+  height: 32px;
+
+  border: 3px solid var(--border-soft);
+  border-top-color: var(--text-main);
+  border-radius: 50%;
+
+  animation: matrix-spin 0.8s linear infinite;
+
+}
+
+.lone-img-container.loaded .matrix-loader {
+  display: none;
+}
+
 /* MATRIX */
 
 .matrix-tabs {

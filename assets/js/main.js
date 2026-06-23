@@ -237,35 +237,97 @@ document.addEventListener("DOMContentLoaded", function () {
   updateScrollProgress();
 });
 
+//document.addEventListener("DOMContentLoaded", function () {
+//
+//  document.querySelectorAll(".code-tabs").forEach((tabs) => {
+//    const buttons = tabs.querySelectorAll(".code-tab");
+//    const panels = tabs.querySelectorAll(".code-tab-panel");
+//  
+//    buttons.forEach((button) => {
+//      button.addEventListener("click", () => {
+//        const target = button.dataset.tab;
+//  
+//        buttons.forEach((btn) => {
+//          btn.classList.remove("active");
+//        });
+//  
+//        panels.forEach((panel) => {
+//          panel.classList.remove("active");
+//        });
+//  
+//        button.classList.add("active");
+//  
+//        tabs
+//          .querySelector(`[data-panel="${target}"]`)
+//          .classList.add("active");
+//      });
+//    });
+//  });
+//
+//});
+
 document.addEventListener("DOMContentLoaded", function () {
 
-  document.querySelectorAll(".code-tabs").forEach((tabs) => {
+  function setupPanelLoader(panel) {
+    const images = panel.querySelectorAll("img");
+
+    if (images.length === 0) {
+      panel.classList.add("loaded");
+      return;
+    }
+
+    let loadedCount = 0;
+
+    function markOneImageDone() {
+      loadedCount += 1;
+
+      if (loadedCount === images.length) {
+        panel.classList.add("loaded");
+      }
+    }
+
+    images.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        markOneImageDone();
+      } else {
+        img.addEventListener("load", markOneImageDone, { once: true });
+        img.addEventListener("error", markOneImageDone, { once: true });
+      }
+    });
+  }
+
+  document.querySelectorAll(".code-tabs").forEach(function (tabs) {
     const buttons = tabs.querySelectorAll(".code-tab");
     const panels = tabs.querySelectorAll(".code-tab-panel");
-  
-    buttons.forEach((button) => {
-      button.addEventListener("click", () => {
+
+    panels.forEach(function (panel) {
+      setupPanelLoader(panel);
+    });
+
+    buttons.forEach(function (button) {
+      button.addEventListener("click", function () {
         const target = button.dataset.tab;
-  
-        buttons.forEach((btn) => {
+
+        buttons.forEach(function (btn) {
           btn.classList.remove("active");
         });
-  
-        panels.forEach((panel) => {
+
+        panels.forEach(function (panel) {
           panel.classList.remove("active");
         });
-  
+
         button.classList.add("active");
-  
-        tabs
-          .querySelector(`[data-panel="${target}"]`)
-          .classList.add("active");
+
+        const targetPanel = tabs.querySelector(`[data-panel="${target}"]`);
+
+        if (targetPanel) {
+          targetPanel.classList.add("active");
+        }
       });
     });
   });
 
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-matrix-tabs]").forEach(function (tabs) {
@@ -331,3 +393,46 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  const containers = document.querySelectorAll(".lone-img-container");
+
+  containers.forEach(function (container) {
+
+    const imgs = container.querySelectorAll("img");
+
+    if (imgs.length === 0) {
+      container.classList.add("loaded");
+      return;
+    }
+
+    let loadedCount = 0;
+
+    function markOneImageDone() {
+      loadedCount += 1;
+
+      if (loadedCount === imgs.length) {
+        container.classList.add("loaded");
+      }
+    }
+
+    imgs.forEach(function (img) {
+      if (img.complete && img.naturalWidth > 0) {
+        markOneImageDone();
+      } else {
+        img.addEventListener("load", markOneImageDone, { once: true });
+        img.addEventListener("error", markOneImageDone, { once: true });
+      }
+    });
+
+  });
+
+});
+
+
+
+
+
+
