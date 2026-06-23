@@ -267,3 +267,67 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll("[data-matrix-tabs]").forEach(function (tabs) {
+    const cells = tabs.querySelectorAll(".matrix-cell");
+    const panels = tabs.querySelectorAll(".matrix-tab-panel");
+
+    function markLoaded(panel) {
+      panel.classList.add("loaded");
+    }
+
+    panels.forEach(function (panel) {
+      const img = panel.querySelector("img.matrix-img");
+
+      if (!img) {
+        panel.classList.add("loaded");
+        return;
+      }
+
+      if (img.complete && img.naturalWidth > 0) {
+        markLoaded(panel);
+      } else {
+        img.addEventListener("load", function () {
+          markLoaded(panel);
+        });
+
+        img.addEventListener("error", function () {
+          panel.classList.add("loaded");
+          panel.classList.add("load-error");
+        });
+      }
+    });
+
+    function setActive(row, col) {
+      cells.forEach(function (cell) {
+        const match =
+          cell.dataset.row === row &&
+          cell.dataset.col === col;
+
+        cell.classList.toggle("active", match);
+      });
+
+      panels.forEach(function (panel) {
+        const match =
+          panel.dataset.row === row &&
+          panel.dataset.col === col;
+
+        panel.classList.toggle("active", match);
+      });
+    }
+
+    cells.forEach(function (cell) {
+      cell.addEventListener("click", function () {
+        setActive(cell.dataset.row, cell.dataset.col);
+      });
+    });
+
+    const initialCell = tabs.querySelector(".matrix-cell.active");
+
+    if (initialCell) {
+      setActive(initialCell.dataset.row, initialCell.dataset.col);
+    } else {
+      setActive("system", "readr");
+    }
+  });
+});
