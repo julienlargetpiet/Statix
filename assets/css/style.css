@@ -1136,6 +1136,17 @@ tbody tr:nth-child(even) {
   }
 }
 
+.matrix-cell-disabled {
+  cursor: default;
+  opacity: 0.35;
+  background: var(--bg-main);
+}
+
+.matrix-cell-disabled:hover {
+  background: var(--bg-main);
+  color: var(--text-muted);
+}
+
 /* =========================
    Login page
    ========================= */
