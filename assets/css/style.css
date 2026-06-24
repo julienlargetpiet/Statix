@@ -1010,9 +1010,19 @@ tbody tr:nth-child(even) {
   border-bottom: 1px solid var(--border-soft);
 }
 
+.matrix-tabs-scroll {
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+}
+
 .matrix-tabs-grid {
   display: grid;
-  grid-template-columns: 8em repeat(3, minmax(0, 1fr));
+  grid-template-columns:
+    var(--matrix-row-header-width, 8em)
+    repeat(var(--matrix-cols, 3), minmax(var(--matrix-cell-width, 12em), 1fr));
+
+  min-width: max-content;
 }
 
 .matrix-tabs-corner,
