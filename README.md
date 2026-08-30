@@ -174,6 +174,38 @@ int main() {
 
 ```
 
+Or just put whatever you want inside:
+
+```
+
+<div class="code-tabs">
+  <div class="code-tabs-header">
+    <button class="code-tab active" data-tab="dpT1C">readr::read_tsv()</button>
+    <button class="code-tab" data-tab="dpT2C">vroom::vroom()</button>
+    <button class="code-tab" data-tab="dpT3C">fread()</button>
+  </div>
+  <div class="code-tab-panel active" data-panel="dpT1C">
+<div class="matrix-loader" aria-hidden="true"></div>
+<p><img src="/assets/common_files/shiny_bench2/plots/dplyr_readr_plots/system_selection.png" alt="90.png"></p>
+<p><img src="/assets/common_files/shiny_bench2/plots/dplyr_readr_plots/user_selection.png" alt="91.png"></p>
+<p><img src="/assets/common_files/shiny_bench2/plots/dplyr_readr_plots/elapsed_selection.png" alt="92.png"></p>
+  </div>
+  <div class="code-tab-panel" data-panel="dpT2C">
+<div class="matrix-loader" aria-hidden="true"></div>
+<p><img src="/assets/common_files/shiny_bench2/plots/dplyr_vroom_plots/system_selection.png" alt="93.png"></p>
+<p><img src="/assets/common_files/shiny_bench2/plots/dplyr_vroom_plots/user_selection.png" alt="94.png"></p>
+<p><img src="/assets/common_files/shiny_bench2/plots/dplyr_vroom_plots/elapsed_selection.png" alt="95.png"></p>
+  </div>
+  <div class="code-tab-panel" data-panel="dpT3C">
+<div class="matrix-loader" aria-hidden="true"></div>
+<p><img src="/assets/common_files/shiny_bench2/plots/dplyr_fread_plots/system_selection.png" alt="96.png"></p>
+<p><img src="/assets/common_files/shiny_bench2/plots/dplyr_fread_plots/user_selection.png" alt="97.png"></p>
+<p><img src="/assets/common_files/shiny_bench2/plots/dplyr_fread_plots/elapsed_selection.png" alt="98.png"></p>
+  </div>
+</div>
+
+```
+
 You can also limit the height for normal code-block expanding it to HTML and adding the `code-block-limited` class, example:
 
 ```
