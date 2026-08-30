@@ -174,6 +174,23 @@ int main() {
 
 ```
 
+## Math with LaTeX
+
+You can write LaTeX like this:
+
+```
+
+$$
+\begin{aligned}
+\frac{\sum\_{i=1}^{n} (x_i - \bar{x})^2}{n}
+\end{aligned}
+$$
+
+```
+
+escaping the underscores, and in one block so it renders perfectly with the KaTeX engine:
+
+![assets/common_files/example_katex.jpg](assets/common_files/example_katex.jpg)
 
 # What Statix Is
 
