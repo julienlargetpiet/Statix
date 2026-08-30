@@ -174,6 +174,23 @@ int main() {
 
 ```
 
+You can also limit the height for normal code-block expanding it to HTML and adding the `code-block-limited` class, example:
+
+```
+
+<div class="code-block">
+  <pre>
+  <button class="copy-btn">Copy</button>
+  <code class="language-bash">
+
+...
+
+  </code>
+  </pre>
+</div>
+
+```
+
 ## Math with LaTeX
 
 You can write LaTeX like this:

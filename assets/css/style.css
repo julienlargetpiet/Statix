@@ -814,6 +814,11 @@ tbody tr:nth-child(even) {
   margin: 1.4em 0;
 }
 
+.code-block-limited pre {
+    max-height: 30rem;
+    overflow-y: auto;
+}
+
 .code-block pre {
   margin: 0;
   padding: 1em 3em 1em 1.2em;
