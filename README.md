@@ -135,6 +135,47 @@ Commands:
 
 ```
 
+## A structural hint
+
+I strongly encourage you to maintain a directory called `my_articles` for example containing all the sub-directories of each-one of your articles.
+
+```
+
+├── unsolved-problem
+│   ├── .statix_articles.json
+│   └── unsolved-problem.md
+├── validating-json-syntax-a-conceptual-approach
+│   ├── .statix_articles.json
+│   └── validating-json-syntax-a-conceptual-approach.md
+├── why-parsers
+│   ├── PARSER.md
+│   └── .statix_articles.json
+└── wifi_story
+    ├── .statix_articles.json
+    └── wifi_story.md
+
+```
+
+I also strongly encourage you to name those sub-directories with the name of the title of their related article.
+
+But if the latter are too long, you can still use this `find` command to get the sub-directory containing the article you are looking for.
+
+Example:
+
+```
+
+find articles_imported -maxdepth 2 -type f -name ".statix_articles.json" -exec grep "$TITLE" -- {} +
+
+```
+
+Output:
+
+```
+
+articles_imported/ShinyNGINX2/.statix_articles.json:    "title": "Where R Data Pipelines Pay Their Cost: data.table, dplyr, fread, readr, and vroom",
+
+```
+
 ## Note on `code blocks`
 
 Of course yo can write normal code blocks with \`\`\` ... \`\`\` synthax.
