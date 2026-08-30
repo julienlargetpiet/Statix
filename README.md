@@ -182,7 +182,7 @@ You can write LaTeX like this:
 
 $$
 \begin{aligned}
-\frac{\sum\_{i=1}^{n} (x_i - \bar{x})^2}{n}
+\frac{\sum\_{i=1}^{n} \left(x\_i - \bar{x}\right)^2}{n}
 \end{aligned}
 $$
 
