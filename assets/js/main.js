@@ -155,7 +155,7 @@ function initSummary() {
     summaryNav.appendChild(link);
   });
 
-  // 🔥 Auto-open on large screens
+  // Auto-open on large screens
   if (window.innerWidth >= 1100) {
     summaryPanel.classList.add("open");
   }
