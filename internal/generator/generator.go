@@ -644,5 +644,51 @@ func (g *Generator) BuildRSS() error {
     })
 }
 
+func (g *Generator) BuildLLMS() error {
+	const base = "https://julienlargetpiet.tech"
+	const marker = "## Articles"
+
+	filename := "assets/llms.txt"
+
+	raw, err := os.ReadFile(filename)
+	if err != nil {
+		return err
+	}
+
+	head := string(raw)
+	if i := strings.Index(head, marker); i >= 0 {
+		head = head[:i]
+	}
+
+	var b strings.Builder
+	b.WriteString(head)
+	b.WriteString(marker + "\n\n")
+
+	for _, a := range g.Articles {
+		if !a.IsPublic {
+			continue
+		}
+
+		link := fmt.Sprintf("%s/articles/%s.html", base, a.TitleURL)
+
+		fmt.Fprintf(&b, "- [%s](%s)", a.Title, link)
+		b.WriteByte('\n')
+	}
+
+	data := []byte(b.String())
+
+	return writeFileAtomic("dist/llms.txt" + , func(f *os.File) error {
+		_, err := f.Write(data)
+		return err
+	})
+}
+
+
+
+
+
+
+
+
 
 

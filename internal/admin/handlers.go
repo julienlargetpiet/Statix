@@ -200,6 +200,11 @@ func (s *Server) rebuildSite() error {
         return err
     }
 
+    err = gen.BuildLLMS()
+    if err != nil {
+        return err
+    }
+
 	return gen.BuildSitemap()
 }
 
