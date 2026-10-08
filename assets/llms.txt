@@ -6,4 +6,10 @@ Your description
 
 Markdown Links
 
+## Static Assets
 
+Images and other static resources are available under `/assets/`, most commonly under `/assets/common_files/`.
+
+Subdirectories are often article-specific, but their names do not necessarily match the corresponding article slugs.
+
+Refer to the HTML of each article to find the exact image paths.
