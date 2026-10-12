@@ -1790,4 +1790,14 @@ img {
     background-color: #e5b900;
 }
 
+/* Dark mode */
+:root[data-theme="dark"] .support-button {
+    background-color: #6b5714;
+    color: #fff3c4;
+}
+
+:root[data-theme="dark"] .support-button:hover {
+    background-color: #826a1c;
+}
+
 
