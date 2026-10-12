@@ -112,7 +112,7 @@ stx - Statix Publishing CLI
 
 Commands:
   set-credentials --url URL --password TOKEN --server_username SERVERUSERNAME --internal_location BLOGPATHONSERVER
-  publish --file FILE -m MESSAGE
+  publish --file FILE -m MESSAGE NAME
   nickname create --title TITLE --subject_id ID --is_public true|false NAME
   nickname import ARTICLE_ID NAME
   nickname import-content [--markdown] ARTICLE_ID NAME

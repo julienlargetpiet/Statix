@@ -1004,7 +1004,7 @@ func usage() {
 	fmt.Println()
 	fmt.Println("Commands:")
 	fmt.Println("  set-credentials --url URL --password TOKEN --server_username SERVERUSERNAME --internal_location BLOGPATHONSERVER")
-	fmt.Println("  publish --file FILE -m MESSAGE")
+	fmt.Println("  publish --file FILE -m MESSAGE name")
 	fmt.Println("  nickname create --title TITLE --subject_id ID --is_public true|false NAME")
     fmt.Println("  nickname import ARTICLE_ID NAME")
     fmt.Println("  nickname import-content [--markdown] ARTICLE_ID NAME")
