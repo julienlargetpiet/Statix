@@ -453,7 +453,7 @@ Here is an example:
 
 [https://julienlargetpiet.tech/articles/where-r-data-pipelines-pay-their-cost-data-table-dplyr-fread-readr-and-vroom.html#speedelapsed](https://julienlargetpiet.tech/articles/where-r-data-pipelines-pay-their-cost-data-table-dplyr-fread-readr-and-vroom.html#speedelapsed)
 
-## Math with LaTeX
+## Math with KaTeX
 
 You can write LaTeX like this:
 
@@ -470,6 +470,43 @@ $$
 escaping the underscores, and in one block so it renders perfectly with the KaTeX engine:
 
 ![assets/common_files/example_katex.jpg](assets/common_files/example_katex.jpg)
+
+## Loading images
+
+You can use the `img-loading` class on a wrapper `<div>...</div>` around an image to display a loading spinner until the image has finished loading, like so:
+
+```
+
+<div class="img-loading">
+    <img
+        src="../../assets/common_files/thumbnails/ShinyNGINX2.png"
+        alt="../../assets/common_files/thumbnails/ShinyNGINX2.png"
+        onload="this.parentElement.classList.add('loaded')"
+    >
+</div>
+
+```
+
+## Tip button
+
+If you've set up a tipping platform, here's a widget you can use to link to your tipping platform:
+
+```
+
+<a href="YOUR_URL"
+   class="support-button"
+   target="_blank"
+   rel="noopener noreferrer">
+  ♥ Support
+</a>
+
+```
+
+Modify `internal/templates/users/index.html` to include it.
+
+Here's an example:
+
+[https://julienlargetpiet.tech](https://julienlargetpiet.tech)
 
 # What Statix Is
 
