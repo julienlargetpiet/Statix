@@ -433,6 +433,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
+document.querySelectorAll(".image-carousel").forEach(carousel => {
+    const slides = [...carousel.querySelectorAll(".carousel-slide")];
 
+    slides.forEach((slide, index) => {
+        const prev = slide.querySelector(".carousel-prev");
+        const next = slide.querySelector(".carousel-next");
+
+        prev.addEventListener("click", event => {
+            event.preventDefault();
+
+            const target = slides[(index - 1 + slides.length) % slides.length];
+
+            carousel.scrollTo({
+                left: target.offsetLeft - slides[0].offsetLeft,
+                behavior: "smooth"
+            });
+        });
+
+        next.addEventListener("click", event => {
+            event.preventDefault();
+
+            const target = slides[(index + 1) % slides.length];
+
+            carousel.scrollTo({
+                left: target.offsetLeft - slides[0].offsetLeft,
+                behavior: "smooth"
+            });
+        });
+    });
+});
 
 

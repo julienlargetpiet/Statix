@@ -1800,4 +1800,70 @@ img {
     background-color: #826a1c;
 }
 
+.image-carousel {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    max-width: 700px;
+
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.carousel-slide {
+    position: relative;
+    flex: 0 0 100%;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    scroll-snap-align: start;
+}
+
+.carousel-slide img {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    align-self: center;
+}
+
+.carousel-prev,
+.carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    text-decoration: none;
+    font-size: 24px;
+    z-index: 1;
+}
+
+.carousel-prev {
+    left: 10px;
+}
+
+.carousel-next {
+    right: 10px;
+}
+
+.carousel-prev:hover,
+.carousel-next:hover {
+    background: rgba(0, 0, 0, 0.85);
+}
+
+
+
 
