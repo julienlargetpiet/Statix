@@ -1,6 +1,20 @@
 :root {
   /* Typography */
   --font-main: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
+
+  cursor: url("/assets/cursors/cursor.png") 1 1, auto;
+
+  a,
+  button,
+  input[type="submit"],
+  input[type="button"],
+  [role="button"],
+  .btn,
+  .theme-toggle {
+      cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
+  }
+
   --line-height-base: 1.6;
 
   /* Warm paper backgrounds */
