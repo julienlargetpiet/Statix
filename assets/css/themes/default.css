@@ -1,7 +1,10 @@
 
 :root {
   /* Typography */
-  --font-main: "Luciole", system-ui, sans-serif;
+  /* --font-main: "Luciole", system-ui, sans-serif; */
+
+  --font-main: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+
   --line-height-base: 1.6;
 
   /* Backgrounds */
