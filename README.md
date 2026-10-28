@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <img src="internal/assets/logo/logo.png" alt="Statix Logo" width="220">
+  <img src="assets/logo/logo.png" alt="Statix Logo" width="220">
 </p>
 
 **[Quickstart](#quickstart)** — Deploy Statix in seconds
