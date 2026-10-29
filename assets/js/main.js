@@ -464,4 +464,50 @@ document.querySelectorAll(".image-carousel").forEach(carousel => {
     });
 });
 
+const pills = [...document.querySelectorAll(
+  ".subject-pills .subject-pill"
+)];
+
+const prev = document.getElementById("subjects-prev");
+const next = document.getElementById("subjects-next");
+
+const pageSize = 3;
+const totalPages = Math.ceil(pills.length / pageSize);
+
+// Start on the page containing the active subject.
+const activeIndex = pills.findIndex(pill =>
+  pill.classList.contains("active")
+);
+
+let page = Math.floor(Math.max(activeIndex, 0) / pageSize);
+
+function renderSubjects() {
+  const start = page * pageSize;
+  const end = start + pageSize;
+
+  pills.forEach((pill, index) => {
+    pill.hidden = index < start || index >= end;
+  });
+
+  prev.disabled = page === 0;
+  next.disabled = page >= totalPages - 1;
+}
+
+prev.addEventListener("click", () => {
+  if (page > 0) {
+    page--;
+    renderSubjects();
+  }
+});
+
+next.addEventListener("click", () => {
+  if (page < totalPages - 1) {
+    page++;
+    renderSubjects();
+  }
+});
+
+renderSubjects();
+
+
 

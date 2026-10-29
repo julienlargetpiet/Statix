@@ -1204,24 +1204,73 @@ tbody tr:nth-child(even) {
 
 .subject-selector {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: nowrap;
+
+  gap: 0.9em;
+  margin: 2.5em auto 3em;
+  padding: 1em 1.2em;
+
+  background: var(--bg-soft);
+  border: 1px solid var(--brutal-ink);
+  border-radius: 0;
+  box-shadow: 4px 4px 0 var(--brutal-shadow);
+
+  max-width: 52em;
+}
+
+/* Container for the visible subjects */
+.subject-pills {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 
   gap: 0.9em;
-  margin: 2.5em 0 3em;
+}
 
-  padding: 1em 1.2em;
+.subject-pills .subject-pill {
+  max-width: 100%;
+  text-align: center;
+  overflow-wrap: anywhere;
+}
+
+/* Hide subjects outside the current page */
+.subject-pills .subject-pill[hidden] {
+  display: none !important;
+}
+
+/* Navigation arrows */
+.subject-arrow {
+  flex-shrink: 0;
+
+  padding: 0.4em 0.7em;
 
   background: var(--bg-soft);
-  border: 1px solid var(--border-soft);
-  border-radius: 0;
+  color: var(--brutal-ink);
 
-  max-width: 52em;
-  margin-left: auto;
-  margin-right: auto;
-  border-color: var(--brutal-ink);
+  border: 1px solid var(--brutal-ink);
+  border-radius: 0;
+  box-shadow: 3px 3px 0 var(--brutal-shadow);
+
+  font: inherit;
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.subject-arrow:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
   box-shadow: 4px 4px 0 var(--brutal-shadow);
+}
+
+.subject-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
 }
 
 .subject-pill {

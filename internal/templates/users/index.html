@@ -29,7 +29,20 @@
   <!-- Subject Selector -->
   <div class="subject-selector">
 
+
+    <button
+       id="subjects-prev"
+       class="subject-arrow"
+       type="button"
+       aria-label="Previous subjects"
+     >
+       ←
+     </button>
+
+  <div class="subject-pills">
+
     <!-- All articles -->
+
     <a 
       href="/index.html" 
       class="subject-pill {{ if not .ActiveSubject }}active{{ end }}"
@@ -48,6 +61,18 @@
 
       {{ end }}
     {{ end }}
+
+  </div>
+
+  <button
+    id="subjects-next"
+    class="subject-arrow"
+    type="button"
+    aria-label="Next subjects"
+  >
+    →
+  </button>
+
 
   </div>
 
