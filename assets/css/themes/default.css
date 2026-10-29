@@ -1,9 +1,47 @@
 
+/* Regular */
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("/assets/fonts/DejaVu/DejaVuSansMono.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Bold */
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("/assets/fonts/DejaVu/DejaVuSansMono-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Oblique */
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("/assets/fonts/DejaVu/DejaVuSansMono-Oblique.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Bold Oblique */
+@font-face {
+  font-family: "DejaVu Sans Mono";
+  src: url("/assets/fonts/DejaVu/DejaVuSansMono-BoldOblique.woff2") format("woff2");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   /* Typography */
   /* --font-main: "Luciole", system-ui, sans-serif; */
 
-  --font-main: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  /*--font-main: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace; */
+
+  --font-main: "DejaVu Sans Mono", ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
   cursor: url("/assets/cursors/cursor.png") 1 1, auto;
 
