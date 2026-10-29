@@ -1883,4 +1883,27 @@ img {
     background: rgba(0, 0, 0, 0.85);
 }
 
+.author-portrait {
+  width: 160px;
+  height: 190px;
+  border-radius: 30%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Light mode */
+.portrait-dark {
+  display: none;
+}
+
+/* Dark mode */
+:root[data-theme="dark"] .portrait-light {
+  display: none;
+}
+
+:root[data-theme="dark"] .portrait-dark {
+  display: block;
+}
+
+
 
