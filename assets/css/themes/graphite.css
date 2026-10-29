@@ -38,9 +38,9 @@
 
 :root {
   /* Typography */
-  --font-main: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  /* --font-main: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace; */
 
-  /* --font-main: "DejaVu Sans Mono", ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace; */
+  --font-main: "DejaVu Sans Mono", ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace; 
 
   cursor: url("/assets/cursors/cursor.png") 1 1, auto;
 
