@@ -508,6 +508,12 @@ Here's an example:
 
 [https://julienlargetpiet.tech](https://julienlargetpiet.tech)
 
+## Title and article's description
+
+You can modify the descriptions in `internal/templates/base.html` and `internal/templates/base_article.html`.
+
+And the main title in `internal/templates/users/index.html`.
+
 # What Statix Is
 
 - Deterministic static publishing engine  
