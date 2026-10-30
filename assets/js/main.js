@@ -447,7 +447,7 @@ document.querySelectorAll(".image-carousel").forEach(carousel => {
 
             carousel.scrollTo({
                 left: target.offsetLeft - slides[0].offsetLeft,
-                behavior: "smooth"
+                behavior: "instant"
             });
         });
 
@@ -458,7 +458,7 @@ document.querySelectorAll(".image-carousel").forEach(carousel => {
 
             carousel.scrollTo({
                 left: target.offsetLeft - slides[0].offsetLeft,
-                behavior: "smooth"
+                behavior: "instant"
             });
         });
     });
@@ -471,7 +471,7 @@ const pills = [...document.querySelectorAll(
 const prev = document.getElementById("subjects-prev");
 const next = document.getElementById("subjects-next");
 
-const pageSize = 3;
+const pageSize = 1;
 const totalPages = Math.ceil(pills.length / pageSize);
 
 // Start on the page containing the active subject.

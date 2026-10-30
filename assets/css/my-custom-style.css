@@ -1282,30 +1282,76 @@ tbody tr:nth-child(even) {
 .subject-arrow {
   flex-shrink: 0;
 
-  padding: 0.4em 0.7em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  background: var(--bg-soft);
+  width: 52px;
+  height: 52px;
+  padding: 0;
+
+  background: var(--bg-main);
   color: var(--brutal-ink);
 
-  border: 1px solid var(--brutal-ink);
+  border: 4px solid var(--brutal-ink);
   border-radius: 0;
-  box-shadow: 3px 3px 0 var(--brutal-shadow);
 
-  font: inherit;
-  font-weight: bold;
+  box-shadow: 5px 5px 0 var(--brutal-shadow);
+
+  font-family: var(--font-main);
+  font-size: 32px;
+  font-weight: 900;
+  line-height: 1;
 
   cursor: pointer;
 }
 
+/* Hover */
 .subject-arrow:hover:not(:disabled) {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 var(--brutal-shadow);
+  background: var(--accent);
+  color: var(--bg-main);
+  box-shadow: 5px 5px 0 var(--brutal-shadow);
 }
 
+/* Goofy rotation */
+#subjects-prev:hover:not(:disabled) {
+  transform: rotate(-7deg);
+}
+
+#subjects-next:hover:not(:disabled) {
+  transform: rotate(7deg);
+}
+
+/* Button press */
+#subjects-prev:active:not(:disabled),
+#subjects-next:active:not(:disabled) {
+  transform: translate(3px, 3px);
+  box-shadow: 2px 2px 0 var(--brutal-shadow);
+}
+
+/* Disabled */
 .subject-arrow:disabled {
   opacity: 0.3;
   cursor: default;
 }
+
+/* Keyboard accessibility */
+.subject-arrow:focus-visible {
+  outline: 3px dashed var(--accent);
+  outline-offset: 5px;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .subject-arrow {
+    width: 40px;
+    height: 40px;
+    border-width: 3px;
+    font-size: 24px;
+    box-shadow: 3px 3px 0 var(--brutal-shadow);
+  }
+}
+
 
 .subject-pill {
   display: inline-block;
@@ -1819,35 +1865,105 @@ img {
     background-color: #826a1c;
 }
 
+
+/* ==================================
+   PIXEL / NEO-BRUTALIST CAROUSEL
+   ================================== */
+
 .image-carousel {
     display: flex;
     align-items: stretch;
+
     width: 100%;
     max-width: 700px;
+    margin: 1.5rem auto 2.5rem;
+
+    background: var(--bg-soft);
+
+    border: 5px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 8px 8px 0 var(--brutal-shadow);
 
     overflow-x: auto;
+    overflow-y: hidden;
+
     scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
+    scroll-behavior: auto;
+
     scrollbar-width: none;
 }
 
+/* Hide scrollbar in WebKit browsers */
+.image-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+/* ==================================
+   SLIDES
+   ================================== */
+
 .carousel-slide {
     position: relative;
+
     flex: 0 0 100%;
     min-width: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    padding: 14px;
+
     scroll-snap-align: start;
+    box-sizing: border-box;
 }
+
+/* Pixel decoration */
+.carousel-slide::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 16px;
+    height: 16px;
+
+    background: var(--accent);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ==================================
+   IMAGES
+   ================================== */
 
 .carousel-slide img {
     display: block;
+
     width: 100%;
     height: auto;
+
     object-fit: contain;
     align-self: center;
+
+    background: var(--bg-main);
+
+    border: 3px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 4px 4px 0 var(--brutal-shadow);
 }
+
+/* Only pixelate actual pixel-art images */
+.carousel-slide img.pixel-art {
+    image-rendering: pixelated;
+}
+
+/* ==================================
+   NAVIGATION ARROWS
+   ================================== */
 
 .carousel-prev,
 .carousel-next {
@@ -1859,29 +1975,95 @@ img {
     align-items: center;
     justify-content: center;
 
-    width: 40px;
-    height: 40px;
+    width: 52px;
+    height: 52px;
+
+    background: var(--bg-main);
+    color: var(--brutal-ink);
+
+    border: 4px solid var(--brutal-ink);
     border-radius: 0;
 
-    background: rgba(0, 0, 0, 0.6);
-    color: white;
+    box-shadow: 5px 5px 0 var(--brutal-shadow);
+
+    font-family: var(--font-main);
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+
     text-decoration: none;
-    font-size: 24px;
-    z-index: 1;
+    cursor: pointer;
+
+    z-index: 2;
 }
 
+/* Position */
 .carousel-prev {
-    left: 10px;
+    left: 20px;
 }
 
 .carousel-next {
-    right: 10px;
+    right: 20px;
 }
 
+/* Goofy hover */
 .carousel-prev:hover,
 .carousel-next:hover {
-    background: rgba(0, 0, 0, 0.85);
+    background: var(--accent);
+    color: var(--bg-main);
 }
+
+.carousel-prev:hover {
+    transform: translateY(-50%) rotate(-7deg);
+}
+
+.carousel-next:hover {
+    transform: translateY(-50%) rotate(7deg);
+}
+
+/* Physical button press */
+.carousel-prev:active,
+.carousel-next:active {
+    transform: translate(3px, calc(-50% + 3px));
+    box-shadow: 2px 2px 0 var(--brutal-shadow);
+}
+
+/* Keyboard accessibility */
+.carousel-prev:focus-visible,
+.carousel-next:focus-visible {
+    outline: 3px dashed var(--accent);
+    outline-offset: 5px;
+}
+
+/* ==================================
+   MOBILE
+   ================================== */
+
+@media (max-width: 480px) {
+    .carousel-slide {
+        padding: 8px;
+    }
+
+    .carousel-prev,
+    .carousel-next {
+        width: 40px;
+        height: 40px;
+
+        border-width: 3px;
+        font-size: 24px;
+
+        box-shadow: 3px 3px 0 var(--brutal-shadow);
+    }
+
+    .carousel-prev {
+        left: 10px;
+    }
+
+    .carousel-next {
+        right: 10px;
+    }
+}
+
 
 .author-portrait {
   width: 160px;
@@ -1905,5 +2087,50 @@ img {
   display: block;
 }
 
+.pixel-portrait {
+  position: relative;
 
+  width: 100%;
+  max-width: 260px;
 
+  padding: 8px;
+  margin: 1.5rem auto;
+
+  background: var(--bg-soft);
+
+  border: 4px solid var(--brutal-ink);
+  border-radius: 0;
+
+  box-shadow: 8px 8px 0 var(--brutal-shadow);
+}
+
+.pixel-portrait img {
+  display: block;
+
+  width: 100%;
+  aspect-ratio: 1 / 1;
+
+  object-fit: cover;
+
+  border: 2px solid var(--brutal-ink);
+  border-radius: 0;
+}
+
+/* Small pixel decoration */
+.pixel-portrait::before {
+  content: "";
+
+  position: absolute;
+  top: -8px;
+  left: -8px;
+
+  width: 12px;
+  height: 12px;
+
+  background: var(--brutal-ink);
+}
+
+/* Optional pixel-art rendering */
+.pixel-portrait img.pixel-art {
+  image-rendering: pixelated;
+}
