@@ -464,50 +464,59 @@ document.querySelectorAll(".image-carousel").forEach(carousel => {
     });
 });
 
-const pills = [...document.querySelectorAll(
-  ".subject-pills .subject-pill"
-)];
+document.addEventListener("DOMContentLoaded", function () {
 
-const prev = document.getElementById("subjects-prev");
-const next = document.getElementById("subjects-next");
+  const selector = document.querySelector(".subject-selector");
+  if (!selector) return;
 
-const pageSize = 1;
-const totalPages = Math.ceil(pills.length / pageSize);
+  const pills = [...selector.querySelectorAll(
+    ".subject-pills .subject-pill"
+  )];
 
-// Start on the page containing the active subject.
-const activeIndex = pills.findIndex(pill =>
-  pill.classList.contains("active")
-);
+  const prev = selector.querySelector("#subjects-prev");
+  const next = selector.querySelector("#subjects-next");
 
-let page = Math.floor(Math.max(activeIndex, 0) / pageSize);
+  if (!prev || !next || pills.length === 0) return;
 
-function renderSubjects() {
-  const start = page * pageSize;
-  const end = start + pageSize;
+  const pageSize = 1;
+  const totalPages = Math.ceil(pills.length / pageSize);
 
-  pills.forEach((pill, index) => {
-    pill.hidden = index < start || index >= end;
+  // Start on the page containing the active subject.
+  const activeIndex = pills.findIndex(pill =>
+    pill.classList.contains("active")
+  );
+
+  let page = Math.floor(Math.max(activeIndex, 0) / pageSize);
+
+  function renderSubjects() {
+    const start = page * pageSize;
+    const end = start + pageSize;
+
+    pills.forEach((pill, index) => {
+      pill.hidden = index < start || index >= end;
+    });
+
+    prev.disabled = page === 0;
+    next.disabled = page >= totalPages - 1;
+  }
+
+  prev.addEventListener("click", () => {
+    if (page > 0) {
+      page--;
+      renderSubjects();
+    }
   });
 
-  prev.disabled = page === 0;
-  next.disabled = page >= totalPages - 1;
-}
+  next.addEventListener("click", () => {
+    if (page < totalPages - 1) {
+      page++;
+      renderSubjects();
+    }
+  });
 
-prev.addEventListener("click", () => {
-  if (page > 0) {
-    page--;
-    renderSubjects();
-  }
+  renderSubjects();
+
 });
-
-next.addEventListener("click", () => {
-  if (page < totalPages - 1) {
-    page++;
-    renderSubjects();
-  }
-});
-
-renderSubjects();
 
 
 
