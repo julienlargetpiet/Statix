@@ -560,7 +560,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const img = event.target.closest(
-                ".portrait-light, .portrait-dark, .pixel-portrait img"
+                ".portrait-light, .portrait-dark, .pixel-portrait img, .matrix-img"
             );
 
             if (!img) return;
@@ -588,4 +588,110 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 })();
 
+/* ==========================================
+   CLICKABLE ARTICLE HEADINGS
+   ========================================== */
 
+document.addEventListener("DOMContentLoaded", () => {
+
+    const headings = document.querySelectorAll(
+        ".article-content h1, " +
+        ".article-content h2, " +
+        ".article-content h3, " +
+        ".article-content h4, " +
+        ".article-content h5, " +
+        ".article-content h6"
+    );
+
+    const usedIds = new Set(
+        [...document.querySelectorAll("[id]")]
+            .map(el => el.id)
+    );
+
+    headings.forEach(heading => {
+
+        // Preserve existing heading IDs.
+        if (!heading.id) {
+            const base = heading.textContent
+                .normalize("NFKD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase()
+                .trim()
+                .replace(/[^\w\s-]/g, "")
+                .replace(/\s+/g, "-") || "section";
+
+            let id = base;
+            let index = 2;
+
+            while (usedIds.has(id)) {
+                id = `${base}-${index++}`;
+            }
+
+            heading.id = id;
+            usedIds.add(id);
+        }
+
+        // Avoid nested or duplicate links.
+        if (heading.querySelector("a")) return;
+
+        const link = document.createElement("a");
+        link.href = "#" + heading.id;
+        link.className = "heading-anchor";
+
+        while (heading.firstChild) {
+            link.appendChild(heading.firstChild);
+        }
+
+        heading.appendChild(link);
+    });
+
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    document.querySelectorAll("[data-matrix-tabs]").forEach(matrix => {
+
+        const top = matrix.querySelector(".matrix-scroll-top");
+        const topInner = matrix.querySelector(".matrix-scroll-inner");
+
+        const wrapper = matrix.querySelector(".matrix-tabs-scroll");
+        const grid = matrix.querySelector(".matrix-tabs-grid");
+
+        if (!top || !topInner || !wrapper || !grid) return;
+
+        function updateWidth() {
+            topInner.style.width = wrapper.scrollWidth + "px";
+            top.scrollLeft = wrapper.scrollLeft;
+        }
+
+        let syncing = false;
+
+        // Top scrollbar -> Bottom scrollbar
+        top.addEventListener("scroll", () => {
+            if (syncing) return;
+
+            syncing = true;
+            wrapper.scrollLeft = top.scrollLeft;
+            syncing = false;
+        });
+
+        // Bottom scrollbar -> Top scrollbar
+        wrapper.addEventListener("scroll", () => {
+            if (syncing) return;
+
+            syncing = true;
+            top.scrollLeft = wrapper.scrollLeft;
+            syncing = false;
+        });
+
+        updateWidth();
+
+        window.addEventListener("resize", updateWidth);
+
+        if ("ResizeObserver" in window) {
+            new ResizeObserver(updateWidth).observe(grid);
+        }
+    });
+
+});

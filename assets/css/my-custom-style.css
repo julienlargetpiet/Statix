@@ -488,9 +488,292 @@ pre:not(.code-block pre) {
   font-size: 0.95em;
 }
 
+
+/* ==========================================
+   PIXEL / NEO-BRUTALIST ADMIN TABLES
+   ========================================== */
+
+/* ==========================================
+   TOP SCROLLBAR
+   ========================================== */
+
+.admin-table-scroll-top {
+    width: 100%;
+    height: 20px;
+
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    margin-bottom: 10px;
+
+    background: var(--bg-soft);
+
+    border: 2px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 3px 3px 0 var(--brutal-shadow);
+}
+
+.admin-table-scroll-inner {
+    height: 1px;
+}
+
+/* ==========================================
+   TABLE WRAPPER
+   ========================================== */
+
+.admin-table-wrapper {
+    position: relative;
+
+    width: 100%;
+    overflow-x: auto;
+
+    background: var(--bg-soft);
+
+    border: 4px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 8px 8px 0 var(--brutal-shadow);
+}
+
+/* ==========================================
+   TABLE
+   ========================================== */
+
+.admin-table {
+    width: 100%;
+    min-width: 600px;
+
+    border-collapse: separate;
+    border-spacing: 0;
+
+    background: var(--bg-main);
+    color: var(--text-main);
+
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================
+   HEADER CELLS
+   ========================================== */
+
+.admin-table thead th {
+    position: relative;
+
+    padding: 1em 1.1em;
+
+    background: var(--brutal-ink);
+    color: var(--bg-main);
+
+    font-weight: 900;
+    font-size: 0.85rem;
+
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+
+    white-space: nowrap;
+
+    border: none;
+    border-right: 2px solid var(--bg-soft);
+    border-bottom: 4px solid var(--accent);
+}
+
+/* Accent on the first header */
+
+.admin-table thead th:first-child {
+    box-shadow: inset 6px 0 0 var(--accent);
+}
+
+/* Little pixel decorations */
+
+.admin-table thead th:last-child::after {
+    content: "";
+
+    display: inline-block;
+
+    width: 8px;
+    height: 8px;
+
+    margin-left: 12px;
+
+    background: var(--accent);
+
+    box-shadow:
+        12px 0 0 var(--bg-main);
+
+    vertical-align: middle;
+}
+
+/* ==========================================
+   BODY CELLS
+   ========================================== */
+
+.admin-table tbody td {
+    position: relative;
+
+    padding: 0.85em 1.1em;
+
+    background: transparent;
+    color: var(--text-main);
+
+    border: none;
+    border-right: 1px solid var(--border-soft);
+    border-bottom: 2px solid var(--brutal-ink);
+
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+/* ==========================================
+   ALTERNATING ROWS
+   ========================================== */
+
+.admin-table tbody tr:nth-child(odd) {
+    background: var(--bg-main);
+}
+
+.admin-table tbody tr:nth-child(even) {
+    background: var(--bg-soft);
+}
+
+/* ==========================================
+   GOOFY HOVER
+   ========================================== */
+
+.admin-table tbody tr:hover {
+    background: var(--bg-hover);
+}
+
+.admin-table tbody tr:hover td {
+    color: var(--text-strong);
+}
+
+/* Pixel accent appears on hover */
+
+.admin-table tbody tr:hover td:first-child {
+    box-shadow: inset 6px 0 0 var(--accent);
+}
+
+/* Small text movement, without animation */
+
+.admin-table tbody tr:hover td:first-child {
+    padding-left: 1.35em;
+}
+
+/* ==========================================
+   LAST ROW / LAST COLUMN
+   ========================================== */
+
+.admin-table th:last-child,
+.admin-table td:last-child {
+    border-right: none;
+}
+
+.admin-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================================
+   LINKS
+   ========================================== */
+
+.admin-table a {
+    display: inline-block;
+
+    padding: 0.2em 0.4em;
+
+    background: var(--bg-soft);
+    color: var(--accent);
+
+    border: 2px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 3px 3px 0 var(--brutal-shadow);
+
+    font-weight: 800;
+    text-decoration: none;
+
+    cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
+}
+
+.admin-table a:hover {
+    background: var(--accent);
+    color: var(--bg-main);
+
+    transform: rotate(-2deg);
+
+    box-shadow: 4px 4px 0 var(--brutal-shadow);
+}
+
+.admin-table a:active {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+}
+
+.admin-table a:focus-visible {
+    outline: 3px dashed var(--accent);
+    outline-offset: 5px;
+}
+
+/* ==========================================
+   BUTTONS INSIDE TABLES
+   ========================================== */
+
+.admin-table button {
+    font-family: var(--font-main);
+    font-weight: 800;
+
+    border: 2px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 3px 3px 0 var(--brutal-shadow);
+
+    cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
+}
+
+.admin-table button:hover:not(:disabled) {
+    transform: rotate(2deg);
+}
+
+.admin-table button:active:not(:disabled) {
+    transform: translate(3px, 3px);
+    box-shadow: none;
+}
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .admin-table-wrapper {
+        border-width: 3px;
+        box-shadow: 5px 5px 0 var(--brutal-shadow);
+    }
+
+    .admin-table {
+        font-size: 0.8rem;
+    }
+
+    .admin-table thead th,
+    .admin-table tbody td {
+        padding: 0.7em 0.8em;
+    }
+
+    .admin-table a {
+        padding: 0.15em 0.3em;
+        box-shadow: 2px 2px 0 var(--brutal-shadow);
+    }
+}
+
 /* =========================
    Admin tables
    ========================= */
+
+/*
 
 .admin-table-scroll-top {
   width: 100%;
@@ -554,6 +837,8 @@ pre:not(.code-block pre) {
   text-decoration: underline;
 }
 
+*/
+
 /* ================================
    Utilities
    ================================ */
@@ -566,6 +851,78 @@ pre:not(.code-block pre) {
 /* ================================
    Scrollbars
    ================================ */
+
+/* ==========================================
+   RETRO 90s / NEO-BRUTALIST SCROLLBARS
+   ========================================== */
+
+/* Firefox and standard scrollbar styling */
+
+/*
+
+html,
+* {
+    scrollbar-width: auto;
+    scrollbar-color: var(--brutal-ink) var(--bg-soft);
+}
+
+*/
+
+/* More detailed styling where supported */
+
+/*
+
+@supports selector(::-webkit-scrollbar) {
+
+    html,
+    * {
+        scrollbar-color: auto;
+    }
+
+    ::-webkit-scrollbar {
+        width: 20px;
+        height: 20px;
+    }
+
+
+    ::-webkit-scrollbar-track {
+        background: var(--bg-soft);
+
+        border: 3px solid var(--brutal-ink);
+        border-radius: 0;
+
+        box-shadow:
+            inset 3px 3px 0 var(--brutal-shadow);
+    }
+
+
+    ::-webkit-scrollbar-thumb {
+        background: var(--accent);
+
+        border: 3px solid var(--brutal-ink);
+        border-radius: 0;
+
+        box-shadow:
+            inset 3px 3px 0 var(--bg-main),
+            inset -3px -3px 0 var(--brutal-shadow);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--brutal-ink);
+    }
+
+    ::-webkit-scrollbar-thumb:active {
+        background: var(--accent-hover);
+    }
+
+
+    ::-webkit-scrollbar-corner {
+        background: var(--bg-soft);
+        border: 3px solid var(--brutal-ink);
+    }
+}
+
+*/
 
 ::-webkit-scrollbar {
   width: 13px;
@@ -588,6 +945,7 @@ pre:not(.code-block pre) {
 * {
   scrollbar-color: var(--accent) var(--bg-main);
 }
+
 
 /* 
 @supports (-moz-appearance: none) {
@@ -1005,7 +1363,85 @@ tbody tr:nth-child(even) {
   display: none;
 }
 
+/* ==========================================
+   MATRIX TOP SCROLLBAR
+   ========================================== */
+
+.matrix-scroll-top {
+    width: 100%;
+    height: 24px;
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    background: var(--bg-soft);
+
+    border-bottom: 3px solid var(--brutal-ink);
+    border-radius: 0;
+
+    scrollbar-width: auto;
+    scrollbar-color: var(--accent) var(--bg-soft);
+}
+
+.matrix-scroll-inner {
+    height: 1px;
+}
+
+/* Bottom scrollbar */
+
+.matrix-tabs-scroll {
+    width: 100%;
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    scrollbar-width: auto;
+    scrollbar-color: var(--accent) var(--bg-soft);
+}
+
+/* ==========================================
+   PIXEL / BRUTALIST SCROLL INDICATOR
+   ========================================== */
+
+.matrix-scroll-hint {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 7px 12px;
+
+    background: var(--bg-main);
+    color: var(--text-strong);
+
+    border-bottom: 2px solid var(--brutal-ink);
+
+    font-family: var(--font-main);
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+
+    text-align: center;
+    user-select: none;
+}
+
+/* Small accent pixels on both sides */
+
+.matrix-scroll-hint::before,
+.matrix-scroll-hint::after {
+    content: "";
+
+    width: 8px;
+    height: 8px;
+
+    margin: 0 12px;
+
+    background: var(--accent);
+    box-shadow: 3px 3px 0 var(--brutal-shadow);
+}
+
 /* MATRIX */
+
+/*
 
 .matrix-tabs {
   margin: 1.8em 0;
@@ -1169,6 +1605,391 @@ tbody tr:nth-child(even) {
 .matrix-cell-disabled:hover {
   background: var(--bg-main);
   color: var(--text-muted);
+}
+
+*/
+
+/* ==========================================
+   PIXEL / NEO-BRUTALIST MATRIX
+   ========================================== */
+
+.matrix-tabs {
+    position: relative;
+
+    margin: 2rem 0;
+    background: var(--bg-soft);
+
+    border: 4px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 8px 8px 0 var(--brutal-shadow);
+
+    overflow: hidden;
+}
+
+/* ==========================================
+   HEADER
+   ========================================== */
+
+.matrix-tabs-header {
+    position: relative;
+
+    background: var(--bg-main);
+    border-bottom: 4px solid var(--brutal-ink);
+}
+
+/* Tiny decorative pixels */
+
+.matrix-tabs-header::after {
+    content: "";
+
+    position: absolute;
+    top: 7px;
+    right: 42px;
+
+    width: 9px;
+    height: 9px;
+
+    background: var(--accent);
+
+    box-shadow:
+        14px 0 0 var(--brutal-ink),
+        28px 0 0 var(--accent);
+
+    pointer-events: none;
+}
+
+/* ==========================================
+   SCROLLABLE GRID
+   ========================================== */
+
+.matrix-tabs-scroll {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    max-width: 100%;
+}
+
+.matrix-tabs-grid {
+    display: grid;
+
+    grid-template-columns:
+        max-content
+        repeat(var(--matrix-cols, 3), max-content);
+
+    width: max-content;
+}
+
+/* ==========================================
+   SHARED CELLS
+   ========================================== */
+
+.matrix-tabs-corner,
+.matrix-tab-row,
+.matrix-tab-col,
+.matrix-cell {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 64px;
+    padding: 0.8em 1em;
+
+    border-right: 2px solid var(--brutal-ink);
+    border-bottom: 2px solid var(--brutal-ink);
+    border-radius: 0;
+
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    line-height: 1.4;
+
+    color: var(--text-main);
+}
+
+/* ==========================================
+   CORNER
+   ========================================== */
+
+.matrix-tabs-corner {
+    background: var(--brutal-ink);
+    color: var(--bg-main);
+
+    font-weight: 900;
+    font-size: 1rem;
+}
+
+/* Little pixel block */
+
+.matrix-tabs-corner::after {
+    content: "";
+
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+
+    width: 12px;
+    height: 12px;
+
+    background: var(--accent);
+
+    box-shadow:
+        -6px -6px 0 var(--bg-main);
+}
+
+/* ==========================================
+   COLUMN HEADERS
+   ========================================== */
+
+.matrix-tab-col {
+    background: var(--bg-main);
+    color: var(--text-strong);
+
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+
+    letter-spacing: 0.05em;
+}
+
+/* ==========================================
+   ROW HEADERS
+   ========================================== */
+
+.matrix-tab-row {
+    justify-content: flex-start;
+
+    background: var(--bg-main);
+    color: var(--text-strong);
+
+    font-weight: 900;
+    text-align: left;
+
+    border-left: 5px solid var(--accent);
+}
+
+/* ==========================================
+   INTERACTIVE CELLS
+   ========================================== */
+
+.matrix-cell {
+    appearance: none;
+
+    background: var(--bg-soft);
+    color: var(--text-main);
+
+    border-top: none;
+    border-left: none;
+
+    text-align: center;
+    font-weight: 700;
+
+    cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
+}
+
+/* Goofy hover */
+
+.matrix-cell:not(.matrix-cell-disabled):hover {
+    background: var(--bg-hover);
+    color: var(--text-strong);
+
+    transform: translate(-2px, -2px) rotate(-1deg);
+
+    box-shadow: 4px 4px 0 var(--brutal-shadow);
+
+    z-index: 2;
+}
+
+/* Physical button press */
+
+.matrix-cell:not(.matrix-cell-disabled):active {
+    transform: translate(2px, 2px);
+
+    box-shadow: none;
+}
+
+/* ==========================================
+   SELECTED CELL
+   ========================================== */
+
+.matrix-cell.active:not(.matrix-cell-disabled) {
+    background: var(--accent);
+    color: var(--bg-main);
+
+    font-weight: 900;
+
+    box-shadow:
+        inset 0 0 0 3px var(--brutal-ink);
+}
+
+/* Selected cell on hover */
+
+.matrix-cell.active:not(.matrix-cell-disabled):hover {
+    transform: rotate(1deg);
+
+    box-shadow:
+        inset 0 0 0 3px var(--brutal-ink),
+        4px 4px 0 var(--brutal-shadow);
+}
+
+/* Keyboard navigation */
+
+.matrix-cell:focus-visible {
+    outline: 3px dashed var(--accent);
+    outline-offset: -6px;
+    z-index: 3;
+}
+
+/* ==========================================
+   DISABLED CELLS
+   ========================================== */
+
+.matrix-cell-disabled,
+.matrix-cell-disabled:hover {
+    background: var(--bg-main);
+    color: var(--text-muted);
+
+    opacity: 0.35;
+    cursor: default;
+
+    transform: none;
+    box-shadow: none;
+}
+
+/* ==========================================
+   CONTENT PANELS
+   ========================================== */
+
+.matrix-tab-panel {
+    display: none;
+
+    position: relative;
+
+    min-height: 220px;
+    padding: 1.5rem;
+
+    background: var(--bg-soft);
+    border-top: 4px solid var(--brutal-ink);
+}
+
+.matrix-tab-panel.active {
+    display: block;
+}
+
+/* Decorative corner */
+
+.matrix-tab-panel::before {
+    content: "";
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 16px;
+    height: 16px;
+
+    background: var(--accent);
+
+    pointer-events: none;
+}
+
+/* ==========================================
+   PANEL IMAGES
+   ========================================== */
+
+.matrix-tab-panel img {
+    display: block;
+
+    max-width: 100%;
+    height: auto;
+
+    margin: 0 auto 1rem;
+}
+
+.matrix-tab-panel img.matrix-img {
+    display: none;
+
+    max-width: 100%;
+    height: auto;
+
+    padding: 8px;
+
+    background: var(--bg-main);
+
+    border: 3px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 6px 6px 0 var(--brutal-shadow);
+}
+
+.matrix-tab-panel.loaded img.matrix-img {
+    display: block;
+}
+
+/* ==========================================
+   PIXEL LOADER
+   ========================================== */
+
+.matrix-loader {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 220px;
+}
+
+.matrix-loader::after {
+    content: "";
+
+    width: 36px;
+    height: 36px;
+
+    border: 6px solid var(--brutal-ink);
+    border-top-color: var(--accent);
+
+    border-radius: 0;
+
+    animation: matrix-spin 0.65s steps(4, end) infinite;
+}
+
+.matrix-tab-panel.loaded .matrix-loader {
+    display: none;
+}
+
+@keyframes matrix-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .matrix-tabs {
+        border-width: 3px;
+        box-shadow: 5px 5px 0 var(--brutal-shadow);
+    }
+
+    .matrix-tabs-corner,
+    .matrix-tab-row,
+    .matrix-tab-col,
+    .matrix-cell {
+        min-height: 52px;
+        padding: 0.65em 0.8em;
+        font-size: 0.8rem;
+    }
+
+    .matrix-tab-panel {
+        padding: 1rem;
+    }
+
+    .matrix-tab-panel img.matrix-img {
+        padding: 5px;
+        box-shadow: 4px 4px 0 var(--brutal-shadow);
+    }
 }
 
 /* =========================
@@ -2255,4 +3076,137 @@ img {
     .image-lightbox-frame img {
         border-width: 2px;
     }
+}
+
+/* ==========================================
+   MATRIX CONTAINER
+   ========================================== */
+
+.matrix-container {
+    margin: 2rem 0;
+}
+
+/* ==========================================
+   INDEPENDENT TOP SCROLLBAR
+   ========================================== */
+
+.matrix-scroll-top {
+    width: 100%;
+    height: 24px;
+
+    overflow-x: scroll;
+    overflow-y: hidden;
+
+    margin-bottom: 14px;
+
+    background: var(--bg-soft);
+
+    border: 3px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 4px 4px 0 var(--brutal-shadow);
+
+    scrollbar-width: auto;
+    scrollbar-color: var(--accent) var(--bg-soft);
+}
+
+.matrix-scroll-inner {
+    height: 1px;
+}
+
+/* ==========================================
+   MATRIX
+   ========================================== */
+
+.matrix-tabs {
+    position: relative;
+
+    margin: 0;
+
+    background: var(--bg-soft);
+
+    border: 4px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 8px 8px 0 var(--brutal-shadow);
+
+    overflow: hidden;
+}
+
+/* ==========================================
+   MINIMAL PIXEL / BRUTALIST HEADINGS
+   ========================================== */
+
+/* H1 — Article title */
+
+.article-header h1 {
+    font-family: var(--font-heading);
+    font-size: clamp(2.2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+
+    color: var(--text-strong);
+
+    margin: 0 0 0.7em;
+    padding: 0;
+
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+/* H2 — Main section */
+
+.article-content h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(1.6rem, 3vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.2;
+
+    color: var(--text-strong);
+
+    margin: 2.8rem 0 1.2rem;
+    padding: 0;
+
+    background: none;
+    border: none;
+    box-shadow: none;
+}
+
+/* ==========================================
+   PIXEL HEADING MARKERS
+   ========================================== */
+
+.article-content h2::before,
+.article-content h3::before,
+.article-content h4::before {
+    content: "";
+
+    display: inline-block;
+
+    width: 0.6em;
+    height: 0.6em;
+
+    margin-right: 0.4em;
+    vertical-align: 0.03em;
+
+    background: var(--heading-marker);
+}
+
+/* H2 — Accent */
+
+.article-content h2 {
+    --heading-marker: var(--accent);
+}
+
+/* H3 — Dark ink */
+
+.article-content h3 {
+    --heading-marker: var(--brutal-ink);
+}
+
+/* H4 — Muted grey */
+
+.article-content h4 {
+    --heading-marker: var(--text-muted);
 }

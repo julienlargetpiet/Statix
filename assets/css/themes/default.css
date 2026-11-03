@@ -43,6 +43,8 @@
 
   --font-main: "DejaVu Sans Mono", ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace;
 
+  --font-heading: "Pixelify Sans", var(--font-main);
+
   cursor: url("/assets/cursors/cursor.png") 1 1, auto;
 
   a,
@@ -55,6 +57,7 @@
   .portrait-light,
   .portrait-dark,
   .pixel-portrait img,
+  .matrix-img,
   .image-lightbox,
   .image-lightbox-frame img {
       cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
