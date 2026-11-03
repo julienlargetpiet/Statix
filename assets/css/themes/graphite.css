@@ -42,7 +42,7 @@
 
   --font-main: "DejaVu Sans Mono", ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", monospace; 
 
-  --font-heading: "Pixelify Sans", var(--font-main);
+  --font-heading: var(--font-main);
 
   cursor: url("/assets/cursors/cursor.png") 1 1, auto;
 

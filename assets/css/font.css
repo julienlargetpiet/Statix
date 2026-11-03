@@ -40,7 +40,7 @@
 
 @font-face {
     font-family: "Pixelify Sans";
-    src: url("/assets/fonts/pixelify-sans.woff2") format("woff2");
+    src: url("/assets/fonts/pixelify/pixelify-sans.woff2") format("woff2");
     font-style: normal;
     font-weight: 400 700;
     font-display: swap;
