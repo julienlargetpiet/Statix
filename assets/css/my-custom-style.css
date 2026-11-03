@@ -2134,3 +2134,125 @@ img {
 .pixel-portrait img.pixel-art {
   image-rendering: pixelated;
 }
+
+/* ==================================
+   GOOFY PIXEL / BRUTALIST LIGHTBOX
+   ================================== */
+
+.portrait-light,
+.portrait-dark,
+.pixel-portrait img {
+    cursor: pointer;
+}
+
+.image-lightbox[hidden] {
+    display: none !important;
+}
+
+.image-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(0, 0, 0, 0.92);
+    cursor: pointer;
+}
+
+/* Main chunky frame */
+
+.image-lightbox-frame {
+    position: relative;
+    display: inline-flex;
+
+    max-width: 92vw;
+    max-height: 90vh;
+
+    padding: 12px;
+
+    background: var(--bg-soft);
+
+    border: 6px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow:
+        10px 10px 0 var(--accent),
+        17px 17px 0 var(--brutal-ink);
+
+    transform: rotate(-1deg);
+}
+
+/* Original image */
+
+.image-lightbox-frame img {
+    display: block;
+
+    width: auto;
+    height: auto;
+
+    max-width: 100%;
+    max-height: calc(85vh - 24px);
+
+    object-fit: contain;
+
+    border: 3px solid var(--brutal-ink);
+    border-radius: 0;
+
+    cursor: pointer;
+}
+
+/* Top-left pixel decoration */
+
+.image-lightbox-frame::before {
+    content: "";
+
+    position: absolute;
+    top: -14px;
+    left: -14px;
+
+    width: 20px;
+    height: 20px;
+
+    background: var(--accent);
+    border: 4px solid var(--brutal-ink);
+    z-index: 2;
+}
+
+/* Bottom-right pixel decoration */
+
+.image-lightbox-frame::after {
+    content: "";
+
+    position: absolute;
+    bottom: -14px;
+    right: -14px;
+
+    width: 16px;
+    height: 16px;
+
+    background: var(--bg-main);
+    border: 4px solid var(--brutal-ink);
+    z-index: 2;
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .image-lightbox-frame {
+        padding: 6px;
+        border-width: 4px;
+
+        box-shadow:
+            5px 5px 0 var(--accent),
+            9px 9px 0 var(--brutal-ink);
+    }
+
+    .image-lightbox-frame img {
+        border-width: 2px;
+    }
+}

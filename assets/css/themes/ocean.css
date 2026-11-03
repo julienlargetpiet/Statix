@@ -51,9 +51,15 @@
   input[type="button"],
   [role="button"],
   .btn,
-  .theme-toggle {
+  .theme-toggle,
+  .portrait-light,
+  .portrait-dark,
+  .pixel-portrait img,
+  .image-lightbox,
+  .image-lightbox-frame img {
       cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
   }
+
 
   --line-height-base: 1.6;
 

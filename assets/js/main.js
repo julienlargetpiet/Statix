@@ -518,5 +518,74 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+(function () {
+    function initLightbox() {
+        const overlay = document.createElement("div");
+        overlay.className = "image-lightbox";
+        overlay.hidden = true;
+
+        const enlarged = document.createElement("img");
+        enlarged.alt = "";
+
+        const frame = document.createElement("div");
+        frame.className = "image-lightbox-frame";
+        
+        frame.appendChild(enlarged);
+        overlay.appendChild(frame);
+
+        document.body.appendChild(overlay);
+
+        let previousOverflow = "";
+
+        function closeLightbox() {
+            if (overlay.hidden) return;
+
+            overlay.hidden = true;
+            enlarged.removeAttribute("src");
+            document.body.style.overflow = previousOverflow;
+        }
+
+        document.addEventListener("click", event => {
+            if (!overlay.hidden) {
+
+                if (
+                    event.target === overlay ||
+                    event.target === frame ||
+                    event.target === enlarged
+                ) {
+                    closeLightbox();
+                }
+
+                return;
+            }
+
+            const img = event.target.closest(
+                ".portrait-light, .portrait-dark, .pixel-portrait img"
+            );
+
+            if (!img) return;
+
+            enlarged.src = img.currentSrc || img.src;
+            enlarged.alt = img.alt || "";
+
+            previousOverflow = document.body.style.overflow;
+            document.body.style.overflow = "hidden";
+
+            overlay.hidden = false;
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") {
+                closeLightbox();
+            }
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initLightbox);
+    } else {
+        initLightbox();
+    }
+})();
 
 
