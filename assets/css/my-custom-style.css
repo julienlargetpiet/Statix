@@ -2360,9 +2360,7 @@ address a:hover {
   opacity: 0;
   pointer-events: none;
 
-  transition:
-    transform 0.25s ease,
-    opacity 0.2s ease;
+  transition: none;
 
   z-index: 200;
 }
@@ -2394,65 +2392,128 @@ address a:hover {
   color: var(--text-strong);
 }
 
-.summary-toggle {
-  position: fixed;
-  top: 6rem;
+/* ==========================================
+   GOOFY / PIXEL BRUTALIST TOC BUTTON
+   ========================================== */
 
-  left: max(1rem, calc(50% - 24em - 16rem - 5rem));
 
-  z-index: 210;
-
-  background: var(--bg-soft);
-  border: 1px solid var(--border-soft);
-  border-radius: 0;
-
-  padding: 0.4rem 0.6rem;
-  cursor: pointer;
-
-  transition: background-color 0.15s ease, left 0.25s ease;
-  box-shadow: 2px 2px 0 var(--brutal-shadow);
+.article-summary {
+    top: 10rem;
 }
+
+/* ==========================================
+   GOOFY TOC BUTTON
+   ========================================== */
+
+:root {
+    --toc-left: calc(15vw + 8px);
+}
+
+/* Keep the existing TOC style */
+.article-summary {
+    left: var(--toc-left);
+    top: 10rem;
+    transition: none;
+}
+
+/* Main toggle button */
+
+.summary-toggle {
+    position: fixed;
+
+    top: 7rem;
+    left: var(--toc-left);
+    right: auto;
+
+    z-index: 210;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 38px;
+    height: 38px;
+    padding: 0;
+
+    background: var(--bg-main);
+    color: var(--brutal-ink);
+
+    border: 4px solid var(--brutal-ink);
+    border-radius: 0;
+
+    border-width: 3px;
+
+    box-shadow: 3px 3px 0 var(--brutal-shadow);
+
+    font-family: var(--font-main);
+    font-size: 20px;
+    font-weight: 900;
+    line-height: 1;
+
+    cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
+
+    transition: none;
+}
+
+/* ==========================================
+   GOOFY HOVER
+   ========================================== */
 
 .summary-toggle:hover {
-  background: var(--bg-hover);
+    background: var(--accent);
+    color: var(--bg-main);
+
+    transform: rotate(-8deg);
 }
 
-@media (max-width: 1000px) {
-  .article-summary {
-    left: 2rem;
-  }
+/* ==========================================
+   PHYSICAL BUTTON PRESS
+   ========================================== */
 
-  .summary-toggle {
-    left: 2rem;
-  }
+.summary-toggle:active {
+    transform: translate(4px, 4px) rotate(3deg);
 
-  .article-summary.open ~ .summary-toggle {
-    left: 2rem;
-  }
+    box-shadow: 1px 1px 0 var(--brutal-shadow);
 }
 
-@media (max-width: 768px) {
-  .article-summary {
-    left: 0;
-    width: 100%;
-    max-height: none;
+/* ==========================================
+   KEYBOARD ACCESSIBILITY
+   ========================================== */
 
-    top: 4.5rem;
-    height: calc(100vh - 5.5rem);
-
-    border-radius: 0;
-    padding-top: 6rem;
-  }
-
-  .summary-toggle {
-    top: 5.5rem;
-    left: 0;
-  }
-
-  .article-summary.open ~ .summary-toggle {
-    left: 0;
-  }
+.summary-toggle:focus-visible {
+    outline: 3px dashed var(--accent);
+    outline-offset: 5px;
 }
+
+
+@media (max-width: 1100px) {
+    .summary-toggle,
+    .article-summary.open ~ .summary-toggle {
+        top: 5.5rem;
+        left: 0;
+        right: auto;
+    }
+}
+
+/* ==========================================
+   SMALL MOBILE
+   ========================================== */
+
+@media (max-width: 480px) {
+    .summary-toggle {
+        width: 34px;
+        height: 34px;
+
+        font-size: 18px;
+        border-width: 2px;
+
+        box-shadow: 2px 2px 0 var(--brutal-shadow);
+    }
+}
+
+
+
+
 
 .article-summary {
   direction: rtl;
@@ -3231,4 +3292,122 @@ img {
 
     text-align: center;
     font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================
+   GOOFY TOC CONNECTOR
+   ========================================== */
+
+:root {
+    --toc-x: calc(15vw + 8px);
+    --toc-button-top: 7rem;
+    --toc-panel-top: 11rem;
+    --toc-button-size: 38px;
+}
+
+/* Shared positions */
+
+.article-summary {
+    left: var(--toc-x);
+    top: var(--toc-panel-top);
+}
+
+.summary-toggle,
+.article-summary.open ~ .summary-toggle {
+    left: var(--toc-x);
+    right: auto;
+    top: var(--toc-button-top);
+
+    width: var(--toc-button-size);
+    height: var(--toc-button-size);
+}
+
+/* Diagonal line, shown only when TOC is open */
+
+body:has(.article-summary.open)::after {
+    content: "";
+
+    position: fixed;
+
+    /* Start at the bottom center of the button */
+    left: calc(
+        var(--toc-x) + var(--toc-button-size) / 2
+    );
+
+    top: calc(
+        var(--toc-button-top) + var(--toc-button-size)
+    );
+
+    /* Reach the top center of the TOC */
+    width: calc(
+        (var(--summary-w) - var(--toc-button-size)) / 2
+    );
+
+    height: calc(
+        var(--toc-panel-top)
+        - var(--toc-button-top)
+        - var(--toc-button-size)
+    );
+
+    background: var(--brutal-ink);
+
+    clip-path: polygon(
+        0 0,
+        20px 0,
+        100% 100%,
+        calc(100% - 20px) 100%
+    );
+
+    z-index: 205;
+    pointer-events: none;
+}
+
+/* Narrow windows and phones */
+
+@media (max-width: 1000px) {
+    :root {
+        --toc-x: 0px;
+        --toc-button-top: 5.5rem;
+        --toc-panel-top: 10rem;
+        --toc-button-size: 34px;
+        --toc-panel-width: min(16rem, calc(100vw - 1rem));
+    }
+
+    /* Normal-sized TOC */
+
+    .article-summary {
+        left: 0;
+        top: var(--toc-panel-top);
+
+        width: var(--toc-panel-width);
+        height: auto;
+        max-height: 70vh;
+
+        padding: 1.2rem;
+    }
+
+    /* Toggle button */
+
+    .summary-toggle,
+    .article-summary.open ~ .summary-toggle {
+        left: 0;
+        right: auto;
+        top: var(--toc-button-top);
+    }
+
+    /* Connector */
+
+    body:has(.article-summary.open)::after {
+        width: calc(
+            (var(--toc-panel-width) - var(--toc-button-size)) / 2
+        );
+
+        clip-path: polygon(
+            0 0,
+            6px 0,
+            100% 100%,
+            calc(100% - 6px) 100%
+        );
+    }
 }
