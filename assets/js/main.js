@@ -481,6 +481,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const pageSize = 1;
   const totalPages = Math.ceil(pills.length / pageSize);
 
+  // Create the page counter above the subject selector.
+  const counter = document.createElement("div");
+  counter.className = "subject-counter";
+  counter.setAttribute("aria-live", "polite");
+  
+  selector.parentNode.insertBefore(counter, selector);
+
   // Start on the page containing the active subject.
   const activeIndex = pills.findIndex(pill =>
     pill.classList.contains("active")
@@ -491,6 +498,8 @@ document.addEventListener("DOMContentLoaded", function () {
   function renderSubjects() {
     const start = page * pageSize;
     const end = start + pageSize;
+
+    counter.textContent = `${page + 1}/${totalPages}`;
 
     pills.forEach((pill, index) => {
       pill.hidden = index < start || index >= end;

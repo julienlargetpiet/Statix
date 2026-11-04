@@ -3210,3 +3210,25 @@ img {
 .article-content h4 {
     --heading-marker: var(--text-muted);
 }
+
+.subject-counter {
+    display: table;
+
+    margin: 0 auto -2rem;
+    padding: 0.3em 0.8em;
+
+    font-family: var(--font-main);
+    font-size: 1rem;
+    font-weight: 900;
+
+    color: var(--text-strong);
+    background: var(--bg-soft);
+
+    border: 3px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 4px 4px 0 var(--brutal-shadow);
+
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
