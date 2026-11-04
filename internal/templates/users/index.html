@@ -76,6 +76,71 @@
 
   </div>
 
+<!-- Small search bar on homepage -->
+
+<div class="home-search">
+    <button
+        id="home-search-trigger"
+        class="home-search-trigger"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="home-search-dialog"
+    >
+        <span class="home-search-icon" aria-hidden="true">⌕</span>
+        <span>Search articles...</span>
+        <span class="home-search-shortcut" aria-hidden="true">/</span>
+    </button>
+</div>
+
+<!-- Focused search window -->
+
+<dialog
+    id="home-search-dialog"
+    class="home-search-dialog"
+    aria-labelledby="home-search-title"
+>
+    <div class="home-search-titlebar">
+        <span id="home-search-title">■ SEARCH.EXE</span>
+
+        <button
+            id="home-search-close"
+            class="home-search-close"
+            type="button"
+            aria-label="Close search"
+        >
+            ×
+        </button>
+    </div>
+
+    <form id="home-search-form" class="home-search-form" role="search">
+        <label for="home-search-input" class="home-search-label">
+            FIND AN ARTICLE_
+        </label>
+
+        <input
+            id="home-search-input"
+            type="search"
+            placeholder="Type something..."
+            autocomplete="off"
+            spellcheck="false"
+        >
+    </form>
+
+    <div
+        id="home-search-status"
+        class="home-search-status"
+        role="status"
+        aria-live="polite"
+    ></div>
+
+    <ul id="home-search-results" class="home-search-results"></ul>
+
+    <div class="home-search-footer">
+        [ENTER] OPEN ARTICLE · [ESC] CLOSE
+    </div>
+</dialog>
+
+
   <!-- <div class="rss-wrapper">
   <a href="/rss.xml" class="subject-pill rss-link">📡 RSS (notifications)</a>
 </div> -->

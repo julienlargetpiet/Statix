@@ -704,3 +704,235 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 });
+
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    const trigger = document.getElementById("home-search-trigger");
+    const dialog = document.getElementById("home-search-dialog");
+    const closeButton = document.getElementById("home-search-close");
+    const input = document.getElementById("home-search-input");
+    const form = document.getElementById("home-search-form");
+    const results = document.getElementById("home-search-results");
+    const status = document.getElementById("home-search-status");
+
+    if (!trigger || !dialog || !input || !form || !results || !status) {
+        return;
+    }
+
+    // Build the search index from existing homepage cards.
+
+    const articles = [...document.querySelectorAll(".doc-card")]
+        .map(card => {
+
+            const link = card.matches("a[href]")
+                ? card
+                : card.querySelector("a.btn[href], h3 a[href], a[href]");
+
+            return {
+                title: card.querySelector("h3")?.textContent.trim() || "",
+                category: card.querySelector(".subject-bookmark")?.textContent.trim() || "",
+                description: card.querySelector("p")?.textContent.trim() || "",
+                href: link?.getAttribute("href") || ""
+            };
+        })
+        .filter(article => article.title && article.href);
+
+    const normalize = text =>
+        text.toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "");
+
+    function findArticles(query) {
+        const words = normalize(query.trim())
+            .split(/\s+/)
+            .filter(Boolean);
+
+        if (words.length === 0) {
+            return articles;
+        }
+
+        return articles
+            .map(article => {
+                const title = normalize(article.title);
+                const category = normalize(article.category);
+                const description = normalize(article.description);
+
+                let score = 0;
+
+                for (const word of words) {
+                    const inTitle = title.includes(word);
+                    const inCategory = category.includes(word);
+                    const inDescription = description.includes(word);
+
+                    // Every searched word must be found somewhere.
+                    if (!inTitle && !inCategory && !inDescription) {
+                        return null;
+                    }
+
+                    if (inTitle) score += 8;
+                    if (inCategory) score += 4;
+                    if (inDescription) score += 2;
+                }
+
+                return { ...article, score };
+            })
+            .filter(Boolean)
+            .sort((a, b) => b.score - a.score);
+    }
+
+    function renderResults() {
+        const query = input.value.trim();
+        const matches = findArticles(query);
+
+        results.replaceChildren();
+
+        const visible = matches.slice(0, 8);
+
+        status.textContent = query
+            ? `${matches.length} MATCHING ARTICLE${matches.length === 1 ? "" : "S"}`
+            : `RECENT ARTICLES · ${articles.length} INDEXED`;
+
+        if (visible.length === 0) {
+            const empty = document.createElement("li");
+
+            empty.className = "home-search-empty";
+            empty.textContent = "NO RESULTS FOUND :(";
+
+            results.appendChild(empty);
+            return;
+        }
+
+        for (const article of visible) {
+
+            const item = document.createElement("li");
+            item.className = "home-search-result";
+
+            const link = document.createElement("a");
+            link.href = article.href;
+
+            const title = document.createElement("span");
+            title.className = "home-search-result-title";
+            title.textContent = article.title;
+
+            const category = document.createElement("span");
+            category.className = "home-search-result-category";
+            category.textContent = article.category;
+
+            const description = document.createElement("span");
+            description.className = "home-search-result-description";
+            description.textContent = article.description;
+
+            link.append(title, category, description);
+            item.appendChild(link);
+            results.appendChild(item);
+        }
+    }
+
+    let selectedIndex = -1;
+    
+    function selectResult(index) {
+        const links = [
+            ...results.querySelectorAll(".home-search-result a")
+        ];
+    
+        if (links.length === 0) {
+            selectedIndex = -1;
+            return;
+        }
+    
+        // Wrap around at the beginning and end.
+        selectedIndex = (index + links.length) % links.length;
+    
+        links.forEach((link, i) => {
+            link.classList.toggle("is-selected", i === selectedIndex);
+        });
+    
+        links[selectedIndex].scrollIntoView({
+            block: "nearest"
+        });
+    }
+
+    input.addEventListener("keydown", event => {
+        if (event.key === "ArrowDown") {
+            event.preventDefault();
+            selectResult(selectedIndex + 1);
+        }
+    
+        if (event.key === "ArrowUp") {
+            event.preventDefault();
+            selectResult(selectedIndex - 1);
+        }
+    });
+
+    function openSearch() {
+        if (dialog.open) return;
+
+        input.value = "";
+        renderResults();
+
+        dialog.showModal();
+        input.focus({ preventScroll: true });
+    }
+
+    function closeSearch() {
+        if (dialog.open) {
+            dialog.close();
+        }
+    }
+
+    // Open / close
+
+    trigger.addEventListener("click", openSearch);
+    closeButton.addEventListener("click", closeSearch);
+
+    // Instant search while typing.
+
+    input.addEventListener("input", renderResults);
+
+    // Enter opens the first matching article.
+
+    form.addEventListener("submit", event => {
+        event.preventDefault();
+
+        const first = results.querySelector("a[href]");
+
+        if (first) {
+            window.location.href = first.href;
+        }
+    });
+
+    // Click outside the window to close.
+
+    dialog.addEventListener("click", event => {
+        if (event.target === dialog) {
+            closeSearch();
+        }
+    });
+
+    // Keyboard shortcuts: / and Ctrl+K / Cmd+K
+
+    document.addEventListener("keydown", event => {
+
+        const target = event.target;
+
+        const isTyping =
+            target instanceof HTMLElement &&
+            (
+                target.isContentEditable ||
+                ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName)
+            );
+
+        const shortcut =
+            event.key === "/" ||
+            ((event.ctrlKey || event.metaKey) &&
+                event.key.toLowerCase() === "k");
+
+        if (shortcut && !isTyping && !dialog.open) {
+            event.preventDefault();
+            openSearch();
+        }
+    });
+});
+
+
