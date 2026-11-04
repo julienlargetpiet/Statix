@@ -720,61 +720,68 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
     }
 
-    // Build the search index from existing homepage cards.
-
-    const articles = [...document.querySelectorAll(".doc-card")]
-        .map(card => {
-
-            const link = card.matches("a[href]")
-                ? card
-                : card.querySelector("a.btn[href], h3 a[href], a[href]");
-
-            return {
-                title: card.querySelector("h3")?.textContent.trim() || "",
-                category: card.querySelector(".subject-bookmark")?.textContent.trim() || "",
-                description: card.querySelector("p")?.textContent.trim() || "",
-                href: link?.getAttribute("href") || ""
-            };
-        })
-        .filter(article => article.title && article.href);
-
     const normalize = text =>
         text.toLowerCase()
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "");
 
+    const articles = [...document.querySelectorAll(".doc-card")]
+        .map(card => {
+    
+            const link = card.matches("a[href]")
+                ? card
+                : card.querySelector("a.btn[href], h3 a[href], a[href]");
+    
+            const title = card.querySelector("h3")?.textContent.trim() || "";
+            const category = card.querySelector(".subject-bookmark")?.textContent.trim() || "";
+            const description = card.querySelector("p")?.textContent.trim() || "";
+    
+            return {
+                title,
+                category,
+                description,
+                href: link?.getAttribute("href") || "",
+    
+                // Precomputed search fields
+                searchTitle: normalize(title),
+                searchCategory: normalize(category),
+                searchDescription: normalize(description)
+            };
+        })
+        .filter(article => article.title && article.href);
+
     function findArticles(query) {
         const words = normalize(query.trim())
             .split(/\s+/)
             .filter(Boolean);
-
+    
         if (words.length === 0) {
             return articles;
         }
-
+    
         return articles
             .map(article => {
-                const title = normalize(article.title);
-                const category = normalize(article.category);
-                const description = normalize(article.description);
-
+                const title = article.searchTitle;
+                const category = article.searchCategory;
+                const description = article.searchDescription;
+    
                 let score = 0;
-
+    
                 for (const word of words) {
                     const inTitle = title.includes(word);
                     const inCategory = category.includes(word);
                     const inDescription = description.includes(word);
-
-                    // Every searched word must be found somewhere.
+    
+                    // Every word must match at least one field.
                     if (!inTitle && !inCategory && !inDescription) {
                         return null;
                     }
-
+    
                     if (inTitle) score += 8;
                     if (inCategory) score += 4;
                     if (inDescription) score += 2;
                 }
-
+    
                 return { ...article, score };
             })
             .filter(Boolean)
