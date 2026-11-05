@@ -4146,4 +4146,17 @@ body:has(.article-summary.open)::after {
 }
 
 
+/* Prevent long links from overflowing on mobile */
+
+@media (max-width: 768px) {
+    article a {
+        overflow-wrap: anywhere;
+        word-break: normal;
+    }
+}
+
+
+
+
+
 
