@@ -4105,4 +4105,23 @@ body:has(.article-summary.open)::after {
     }
 }
 
+/* Light mode */
+.juju-welcome .portrait-light {
+    display: block;
+}
+
+.juju-welcome .portrait-dark {
+    display: none;
+}
+
+/* Dark mode */
+:root[data-theme="dark"] .juju-welcome .portrait-light {
+    display: none;
+}
+
+:root[data-theme="dark"] .juju-welcome .portrait-dark {
+    display: block;
+}
+
+
 
