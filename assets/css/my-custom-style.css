@@ -3791,3 +3791,318 @@ body:has(.article-summary.open)::after {
     outline: none;
 }
 
+/* ==========================================
+   JUJU.EXE — RETRO BLOG MASCOT
+   ========================================== */
+
+.juju-welcome {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    z-index: 9999;
+
+    display: flex;
+    align-items: flex-end;
+    gap: 1rem;
+
+    max-width: calc(100vw - 2rem);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(200px);
+    pointer-events: none;
+}
+
+.juju-welcome[hidden] {
+    display: none !important;
+}
+
+/* ==========================================
+   ENTRANCE / EXIT
+   ========================================== */
+
+.juju-welcome.is-visible {
+    visibility: visible;
+    pointer-events: auto;
+
+    animation: juju-enter 0.6s steps(6, end) both;
+}
+
+.juju-welcome.is-leaving {
+    pointer-events: none;
+
+    animation: juju-exit 0.5s steps(5, end) both;
+}
+
+/* ==========================================
+   MASCOT IMAGE
+   ========================================== */
+
+.juju-image {
+    display: block;
+
+    width: 128px;
+    height: auto;
+
+    flex-shrink: 0;
+
+    image-rendering: pixelated;
+    transform-origin: bottom center;
+}
+
+.juju-welcome.is-visible:not(.is-leaving) .juju-image {
+    animation: juju-idle 1.2s steps(4, end) infinite;
+}
+
+/* ==========================================
+   SPEECH BUBBLE
+   ========================================== */
+
+.juju-bubble {
+    position: relative;
+
+    width: 260px;
+    max-width: 100%;
+
+    margin-bottom: 2.5rem;
+
+    background: var(--bg-soft);
+    color: var(--text-main);
+
+    border: 4px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 7px 7px 0 var(--brutal-shadow);
+}
+
+/* Small pixel-style pointer */
+
+.juju-bubble::after {
+    content: "";
+
+    position: absolute;
+    right: -18px;
+    bottom: 20px;
+
+    width: 18px;
+    height: 18px;
+
+    background: var(--bg-soft);
+
+    border-right: 4px solid var(--brutal-ink);
+    border-bottom: 4px solid var(--brutal-ink);
+
+    transform: rotate(-45deg);
+}
+
+/* ==========================================
+   TITLE BAR
+   ========================================== */
+
+.juju-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0.4rem 0.6rem;
+
+    background: var(--accent);
+    color: var(--bg-main);
+
+    border-bottom: 4px solid var(--brutal-ink);
+
+    font-family: var(--font-main);
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+}
+
+.juju-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 26px;
+    height: 26px;
+    padding: 0;
+
+    background: var(--bg-main);
+    color: var(--brutal-ink);
+
+    border: 2px solid var(--brutal-ink);
+    border-radius: 0;
+
+    font-family: var(--font-main);
+    font-size: 1.25rem;
+    font-weight: 900;
+
+    cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
+}
+
+.juju-close:hover {
+    background: var(--brutal-ink);
+    color: var(--bg-main);
+    transform: rotate(8deg);
+}
+
+.juju-close:focus-visible {
+    outline: 3px dashed var(--accent);
+    outline-offset: 4px;
+}
+
+/* ==========================================
+   MESSAGE
+   ========================================== */
+
+.juju-message {
+    padding: 1rem;
+
+    font-family: var(--font-main);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.juju-message strong {
+    display: block;
+    margin-bottom: 0.5rem;
+
+    color: var(--accent);
+    font-weight: 900;
+}
+
+.juju-message p {
+    margin: 0;
+}
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+
+/* Jump into the screen */
+
+@keyframes juju-enter {
+    0% {
+        opacity: 0;
+        transform: translateY(200px) rotate(-15deg);
+    }
+
+    55% {
+        opacity: 1;
+        transform: translateY(-25px) rotate(8deg);
+    }
+
+    80% {
+        opacity: 1;
+        transform: translateY(10px) rotate(-4deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) rotate(0);
+    }
+}
+
+/* Pixelated idle bounce */
+
+@keyframes juju-idle {
+    0%, 100% {
+        transform: translateY(0) rotate(0);
+    }
+
+    25% {
+        transform: translateY(-6px) rotate(-3deg);
+    }
+
+    50% {
+        transform: translateY(-12px) rotate(3deg);
+    }
+
+    75% {
+        transform: translateY(-4px) rotate(-2deg);
+    }
+}
+
+/* Drop out of the screen */
+
+@keyframes juju-exit {
+    0% {
+        opacity: 1;
+        transform: translateY(0) rotate(0);
+    }
+
+    30% {
+        opacity: 1;
+        transform: translateY(-20px) rotate(-10deg);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(250px) rotate(20deg);
+    }
+}
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    .juju-welcome {
+        right: 0.75rem;
+        bottom: 1rem;
+
+        gap: 0.5rem;
+        max-width: calc(100vw - 1.5rem);
+    }
+
+    .juju-image {
+        width: 85px;
+    }
+
+    .juju-bubble {
+        width: min(220px, calc(100vw - 7.5rem));
+        margin-bottom: 1.5rem;
+
+        border-width: 3px;
+        box-shadow: 4px 4px 0 var(--brutal-shadow);
+    }
+
+    .juju-titlebar {
+        font-size: 0.7rem;
+        border-bottom-width: 3px;
+    }
+
+    .juju-message {
+        padding: 0.7rem;
+        font-size: 0.75rem;
+    }
+
+    .juju-bubble::after {
+        right: -14px;
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .juju-welcome.is-visible,
+    .juju-welcome.is-leaving,
+    .juju-welcome.is-visible .juju-image {
+        animation: none;
+    }
+
+    .juju-welcome.is-visible:not(.is-leaving) {
+        opacity: 1;
+        transform: none;
+    }
+
+    .juju-welcome.is-leaving {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+

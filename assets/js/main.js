@@ -942,4 +942,59 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+document.addEventListener("DOMContentLoaded", () => {
 
+    const mascot = document.getElementById("juju-welcome");
+    const closeButton = document.getElementById("juju-close");
+
+    if (!mascot || !closeButton) return;
+
+    const STORAGE_KEY = "juju-welcome-seen";
+
+    const VISIBLE_DURATION = 5000;
+    const EXIT_DURATION = 500;
+
+    let exitTimer = null;
+    let removeTimer = null;
+    let leaving = false;
+
+    // Display only once per browser session.
+    // Storage can occasionally be disabled by the browser.
+
+    try {
+        if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+            return;
+        }
+
+        sessionStorage.setItem(STORAGE_KEY, "1");
+    } catch {
+        // Continue without session persistence.
+    }
+
+    function showJuju() {
+        mascot.hidden = false;
+        mascot.classList.add("is-visible");
+
+        exitTimer = setTimeout(hideJuju, VISIBLE_DURATION);
+    }
+
+    function hideJuju() {
+        if (leaving) return;
+
+        leaving = true;
+
+        clearTimeout(exitTimer);
+
+        mascot.classList.add("is-leaving");
+
+        removeTimer = setTimeout(() => {
+            mascot.hidden = true;
+            mascot.classList.remove("is-visible", "is-leaving");
+        }, EXIT_DURATION);
+    }
+
+    closeButton.addEventListener("click", hideJuju);
+
+    showJuju();
+
+});
