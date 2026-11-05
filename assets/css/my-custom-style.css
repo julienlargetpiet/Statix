@@ -61,7 +61,7 @@ p {
 
 a {
   color: var(--text-strong);
-  text-decoration: none;
+  /* text-decoration: none; */
 }
 
 a:hover {
