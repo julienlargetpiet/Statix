@@ -61,7 +61,7 @@ p {
 
 a {
   color: var(--text-strong);
-  /* text-decoration: none; */
+  text-decoration: none;
 }
 
 a:hover {
@@ -4150,6 +4150,7 @@ body:has(.article-summary.open)::after {
 article a {
     overflow-wrap: anywhere;
     word-break: normal;
+    text-decoration: underline;
 }
 
 
