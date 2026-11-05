@@ -998,3 +998,45 @@ document.addEventListener("DOMContentLoaded", () => {
     showJuju();
 
 });
+
+
+function fitCardDescriptions() {
+    document.querySelectorAll(".doc-card p").forEach(p => {
+
+        // Reset previous adjustments
+        p.style.display = "";
+        p.style.webkitBoxOrient = "";
+        p.style.webkitLineClamp = "";
+        p.style.flexShrink = "";
+
+        // Measure available height
+        const height = p.getBoundingClientRect().height;
+        const lineHeight = parseFloat(getComputedStyle(p).lineHeight);
+
+        // Calculate how many complete lines fit
+        const lines = Math.floor(height / lineHeight);
+
+        if (lines < 1) {
+            p.style.display = "none";
+            return;
+        }
+
+        // Show only complete lines
+        p.style.display = "-webkit-box";
+        p.style.webkitBoxOrient = "vertical";
+        p.style.webkitLineClamp = String(lines);
+        p.style.flexShrink = "0";
+    });
+}
+
+// Initial calculation
+window.addEventListener("load", fitCardDescriptions);
+
+// Recalculate when screen size changes
+window.addEventListener("resize", fitCardDescriptions);
+
+// Recalculate when web fonts finish loading
+document.fonts.ready.then(fitCardDescriptions);
+
+
+

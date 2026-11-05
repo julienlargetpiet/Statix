@@ -273,6 +273,8 @@ pre:not(.code-block pre) {
    Doc Card
    ================================ */
 
+/*
+
 .doc-card {
   background: var(--bg-soft);
   border: 1px solid var(--border-soft);
@@ -282,7 +284,7 @@ pre:not(.code-block pre) {
   display: flex;
   flex-direction: column;
 
-  min-height: 16em;
+  height: 16em;
 
   transition:
     transform 0.15s ease,
@@ -291,6 +293,49 @@ pre:not(.code-block pre) {
   border-color: var(--brutal-ink);
   box-shadow: 4px 4px 0 var(--brutal-shadow);
 }
+
+.doc-card p {
+  margin: 0 0 1.1em;
+  font-size: 0.95em;
+  color: var(--text-main);
+  overflow: hidden
+
+} */
+
+.doc-card {
+    background: var(--bg-soft);
+    border: 1px solid var(--brutal-ink);
+    border-radius: 0;
+    padding: 1.2em;
+
+    display: flex;
+    flex-direction: column;
+
+    height: 20em;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+
+    box-shadow: 4px 4px 0 var(--brutal-shadow);
+}
+
+
+.doc-card p {
+    margin: 0 0 1.1em;
+    font-size: 0.95em;
+    color: var(--text-main);
+
+    line-height: 1.5;
+
+    min-height: 0;
+    flex-shrink: 1;
+    overflow: hidden;
+}
+
 
 .subject-bookmark {
   align-self: flex-start;
@@ -306,12 +351,6 @@ pre:not(.code-block pre) {
   background: color-mix(in srgb, var(--accent) 12%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
   border-radius: 0;
-}
-
-.doc-card p {
-  margin: 0 0 1.1em;
-  font-size: 0.95em;
-  color: var(--text-main);
 }
 
 .doc-card:hover {
@@ -4153,7 +4192,9 @@ article a {
     text-decoration: underline;
 }
 
-
+article :is(h1, h2, h3, h4, h5, h6) a {
+    text-decoration: none;
+}
 
 
 
