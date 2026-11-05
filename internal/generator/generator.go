@@ -131,19 +131,38 @@ func (g *Generator) BuildArticleViewsForSubject(subject_id int64) []model.Articl
 
 var htmlTagRe = regexp.MustCompile(`<[^>]+>`)
 
-func excerpt(htmlContent string, words int) string {
-	// 1. Strip HTML tags
-	text := htmlTagRe.ReplaceAllString(htmlContent, "")
-	text = html.UnescapeString(text)
+//func excerpt(htmlContent string, words int) string {
+//	// 1. Strip HTML tags
+//	text := htmlTagRe.ReplaceAllString(htmlContent, "")
+//	text = html.UnescapeString(text)
+//
+//	// 2. Normalize whitespace
+//	fields := strings.Fields(text)
+//	if len(fields) <= words {
+//		return strings.Join(fields, " ")
+//	}
+//
+//	// 3. Cut + ellipsis
+//	return strings.Join(fields[:words], " ") + "…"
+//}
 
-	// 2. Normalize whitespace
-	fields := strings.Fields(text)
-	if len(fields) <= words {
-		return strings.Join(fields, " ")
-	}
+func excerpt(htmlContent string, maxChars int) string {
+    // Strip HTML tags
+    text := htmlTagRe.ReplaceAllString(htmlContent, "")
+    text = html.UnescapeString(text)
 
-	// 3. Cut + ellipsis
-	return strings.Join(fields[:words], " ") + "…"
+    // Normalize whitespace
+    text = strings.Join(strings.Fields(text), " ")
+
+    // Convert to runes to handle Unicode
+    chars := []rune(text)
+
+    if len(chars) <= maxChars {
+        return text
+    }
+
+    // Truncate and add ellipsis
+    return strings.TrimSpace(string(chars[:maxChars])) + "…"
 }
 
 type Generator struct {
