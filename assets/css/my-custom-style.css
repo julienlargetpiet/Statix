@@ -2692,8 +2692,8 @@ img {
 }
 
 .img-loading img {
-    display: block;
-    width: 100%;
+    max-width: 100%;
+    height: auto;
 
     opacity: 0;
     transition: opacity 0.25s ease;
@@ -2706,6 +2706,28 @@ img {
 .img-loading.loaded img {
     opacity: 1;
 }
+
+/* Light mode */
+
+.img-loading img.portrait-light {
+    display: block;
+}
+
+.img-loading img.portrait-dark {
+    display: none;
+}
+
+/* Dark mode */
+
+:root[data-theme="dark"] .img-loading img.portrait-light {
+    display: none;
+}
+
+:root[data-theme="dark"] .img-loading img.portrait-dark {
+    display: block;
+}
+
+
 
 @keyframes img-spin {
     to {
