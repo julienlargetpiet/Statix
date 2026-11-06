@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+
+        <script>
+          (function () {
+            const theme = localStorage.getItem("theme");
+            if (theme) {
+              document.documentElement.dataset.theme = theme;
+            }
+          })();
+        </script>
+
+        <meta charset="utf-8" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+
+	    <meta name="description" content="your description.">
+
+        <!-- <link rel="preload"
+      	    href="/assets/Luciole_webfonts/Luciole-Regular/Luciole-Regular.woff2"
+      	    as="font"
+      	    type="font/woff2"
+            crossorigin> -->
+
+        <title>{{ block "title" . }} {{ end }}</title>
+
+        <link rel="stylesheet" href="/assets/css/font.css">
+        <link rel="stylesheet" href="/assets/css/theme.css">
+        <link rel="stylesheet" href="/assets/css/style.css">
+
+        <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+
+</head>
+<body>
+
+        <div class="scroll-progress">
+          <div class="scroll-progress-bar"></div>
+        </div>
+
+
+      <!-- =========================
+       Top Navigation
+       ========================= -->
+        <header class="topbar">
+            <div class="topbar-inner">
+
+                <div class="logo">
+                    <a href="/">
+                        <img src="/assets/logo/logo.png" alt="Home" width="64">
+                    </a>
+                </div>
+
+                <nav>
+                    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                      ☾
+                    </button>
+                </nav>
+            </div>
+        </header>
+
+        <main id="page-content">
+          
+
+        </main>
+
+        <script src="/assets/js/main.js"></script>
+        <script src="/assets/js/agressive_cacher.js"></script>
+
+        <script defer src="/assets/prism/prism.min.js"></script>
+        <script defer src="/assets/prism/components/prism-clike.min.js"></script>
+        <script defer src="/assets/prism/components/prism-c.min.js"></script>
+        <script defer src="/assets/prism/components/prism-cpp.min.js"></script>
+        <script defer src="/assets/prism/components/prism-haskell.min.js"></script>
+        <script defer src="/assets/prism/components/prism-rust.min.js"></script>
+        <script defer src="/assets/prism/components/prism-go.min.js"></script>
+        <script defer src="/assets/prism/components/prism-r.min.js"></script>
+        <script defer src="/assets/prism/components/prism-nginx.min.js"></script>
+        <script defer src="/assets/prism/components/prism-systemd.min.js"></script>
+        <script defer src="/assets/prism/components/prism-bash.min.js"></script>
+        <script defer src="/assets/prism/components/prism-jq.min.js"></script>
+        <script defer src="/assets/prism/components/prism-java.min.js"></script>
+        <script defer src="/assets/prism/components/prism-sas.min.js"></script>
+        <script defer src="/assets/prism/components/prism-python.min.js"></script>
+        <script defer src="/assets/prism/components/prism-awk.min.js"></script>
+        <script defer src="/assets/prism/components/prism-latex.min.js"></script>
+
+        <link rel="stylesheet" href="/assets/katex/katex.min.css">        
+        <script defer src="/assets/katex/katex.min.js"></script>
+        <script defer src="/assets/katex/contrib/auto-render.min.js"></script>
+
+        <script defer>
+          document.addEventListener("DOMContentLoaded", function () {
+            renderMathInElement(document.body, {
+              delimiters: [
+                { left: "$$", right: "$$", display: true },
+                { left: "$", right: "$", display: false }
+              ]
+            });
+          });
+        </script>
+
+        <footer class="site-footer">
+          <span class="architecture-note">
+            Statically served. Dynamically authored.
+          </span><br>
+          <span class="architecture-note">
+            Powered by <a href="https://github.com/julienlargetpiet/statix?tab=readme-ov-file#express-your-ideas-without-friction">Statix</a>
+          </span>
+          <address>
+              <a href="mailto:username@domainname.com">username@domainname.com</a>
+          </address>
+        </footer>
+
+        <br>
+
+<script defer>
+  document.addEventListener("DOMContentLoaded", function () {
+    Prism.highlightAll();
+  });
+</script>
+
+</body>
+</html>

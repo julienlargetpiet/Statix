@@ -4426,4 +4426,230 @@ article :is(h1, h2, h3, h4, h5, h6) a {
     font-size: max(16px, 1rem);
 }
 
+/* ==========================================
+   SUPPORT PAGE — NEO BRUTALIST
+   ========================================== */
 
+.support-page {
+    max-width: 900px;
+    margin: 3rem auto 5rem;
+}
+
+/* Header */
+
+.support-header {
+    margin-bottom: 3rem;
+}
+
+.support-eyebrow {
+    color: var(--accent);
+    font-size: 0.8rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+}
+
+.support-header h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 900;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.support-header p:not(.support-eyebrow) {
+    color: var(--text-main);
+    line-height: 1.8;
+    max-width: 680px;
+}
+
+/* Card grid */
+
+.support-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+/* Center the third card on its own row */
+.support-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    width: calc((100% - 1.5rem) / 2);
+    justify-self: center;
+}
+
+/* On mobile, all cards take the full width */
+@media (max-width: 650px) {
+
+    .support-card:last-child:nth-child(odd) {
+        grid-column: auto;
+        width: 100%;
+    }
+}
+
+/* Individual cards */
+
+.support-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 1.5rem;
+
+    background: var(--bg-soft);
+    color: var(--text-main);
+
+    border: 3px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 6px 6px 0 var(--brutal-shadow);
+}
+
+/* Card header */
+
+.support-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.support-card-number {
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.05em;
+}
+
+.support-card-tag {
+    padding: 0.3rem 0.5rem;
+
+    border: 2px solid var(--brutal-ink);
+    background: var(--bg-main);
+    color: var(--accent);
+
+    font-size: 0.7rem;
+    font-weight: 900;
+}
+
+/* Card content */
+
+.support-card h2 {
+    margin: 0 0 1rem;
+    font-size: 1.5rem;
+    font-weight: 900;
+}
+
+.support-card-description {
+    margin: 0 0 2rem;
+    color: var(--text-main);
+    line-height: 1.7;
+    flex-grow: 1;
+}
+
+.support-card-detail {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+
+    background: var(--bg-main);
+    border: 2px dashed var(--brutal-ink);
+
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.support-card-symbol {
+    color: var(--accent);
+    font-size: 1.6rem;
+    font-weight: 900;
+    line-height: 1;
+}
+
+/* Buttons */
+
+.support-card-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    padding: 1rem 1.2rem;
+
+    background: var(--accent);
+    color: var(--bg-main);
+
+    border: 3px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: 4px 4px 0 var(--brutal-shadow);
+
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    font-weight: 900;
+    text-decoration: none;
+
+    cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
+}
+
+.support-card-button span {
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+/* Desktop hover only */
+
+@media (hover: hover) and (pointer: fine) {
+    .support-card-button:hover {
+        background: var(--accent-hover);
+        color: var(--bg-main);
+        transform: rotate(-1deg);
+        box-shadow: 6px 6px 0 var(--brutal-shadow);
+    }
+}
+
+.support-card-button:active {
+    transform: translate(3px, 3px);
+    box-shadow: 1px 1px 0 var(--brutal-shadow);
+}
+
+.support-card-button:focus-visible {
+    outline: 3px dashed var(--accent);
+    outline-offset: 6px;
+}
+
+/* Footer note */
+
+.support-footer-note {
+    margin-top: 3rem;
+    padding: 1.2rem;
+
+    border-left: 4px solid var(--accent);
+
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+/* Mobile */
+
+@media (max-width: 650px) {
+    .support-page {
+        margin: 2rem auto 4rem;
+    }
+
+    .support-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .support-card {
+        padding: 1.2rem;
+        box-shadow: 4px 4px 0 var(--brutal-shadow);
+    }
+
+    .support-card h2 {
+        font-size: 1.3rem;
+    }
+}
