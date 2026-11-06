@@ -1038,5 +1038,387 @@ window.addEventListener("resize", fitCardDescriptions);
 // Recalculate when web fonts finish loading
 document.fonts.ready.then(fitCardDescriptions);
 
+document.addEventListener("DOMContentLoaded", () => {
+    const article = document.querySelector(".article-content");
+    const input = document.getElementById("article-search-input");
+    const results = document.getElementById("article-search-results");
 
+    if (!article || !input || !results) return;
+
+    const PAGE_SIZE = 50;
+    const HIGHLIGHT_NAME = "article-search-match";
+
+    // Index the rendered article text just once.
+    const text = article.innerText.replace(/\s+/g, " ").trim();
+
+    let matches = [];
+    let selected = -1;
+    let visibleCount = PAGE_SIZE;
+    let usedSelection = false;
+
+    const escapeRegex = value =>
+        value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    function clearHighlight() {
+        if (CSS.highlights) {
+            CSS.highlights.delete(HIGHLIGHT_NAME);
+        }
+
+        if (usedSelection) {
+            window.getSelection()?.removeAllRanges();
+            usedSelection = false;
+        }
+    }
+
+    /* ------------------------------------------
+       FIND THE NTH OCCURRENCE IN THE REAL DOM
+
+       Called only when selecting a result.
+       No permanent DOM-to-text index required.
+       ------------------------------------------ */
+
+    function findRange(ordinal, phrase) {
+        const needle = phrase.toLowerCase();
+
+        const walker = document.createTreeWalker(
+            article,
+            NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT
+        );
+
+        const blockSelector = [
+            "div", "section", "article", "p", "pre",
+            "li", "blockquote", "figure", "figcaption",
+            "h1", "h2", "h3", "h4", "h5", "h6",
+            "table", "tr", "td", "th"
+        ].join(",");
+
+        let buffer = "";
+        let positions = [];
+        let lastWasSpace = true;
+        let previousBlock = null;
+        let count = 0;
+
+        function feed(char, node, offset) {
+            char = /\s/.test(char) ? " " : char;
+
+            // Collapse consecutive whitespace.
+            if (char === " " && lastWasSpace) return null;
+
+            lastWasSpace = char === " ";
+
+            buffer += char.toLowerCase();
+            positions.push({ node, offset });
+
+            if (buffer.length > needle.length) {
+                buffer = buffer.slice(-needle.length);
+                positions.shift();
+            }
+
+            if (buffer !== needle) return null;
+
+            if (count++ === ordinal) {
+                const first = positions[0];
+                const last = positions[positions.length - 1];
+
+                const range = document.createRange();
+
+                range.setStart(first.node, first.offset);
+                range.setEnd(last.node, last.offset + 1);
+
+                return range;
+            }
+
+            // Match non-overlapping occurrences, like matchAll().
+            buffer = "";
+            positions = [];
+
+            return null;
+        }
+
+        let node;
+
+        while ((node = walker.nextNode())) {
+            if (node.nodeType === Node.ELEMENT_NODE) { // IF it's an HTML node we skipthe iteration
+                if (node.tagName === "BR") {
+                    if (node.getClientRects().length) {
+                        feed(" ", node, 0);
+                    }
+                }
+                continue;
+            }
+
+            const parent = node.parentElement;
+
+            if (!parent || !node.nodeValue) continue;
+
+            // Skip hidden and non-content elements.
+            if (parent.closest(
+                "script, style, template, noscript, " +
+                "[hidden], [aria-hidden='true']"
+            )) continue;
+
+            if (!parent.getClientRects().length) continue;
+
+            const block = parent.closest(blockSelector);
+
+            // Separate distinct content blocks.
+            if (previousBlock && block !== previousBlock) {
+                feed(" ", node, 0);
+            }
+
+            previousBlock = block;
+
+            for (let i = 0; i < node.nodeValue.length; i++) {
+                const range = feed(node.nodeValue[i], node, i);
+
+                if (range) return range;
+            }
+        }
+
+        return null;
+    }
+
+    /* ------------------------------------------
+       SCROLL TO THE EXACT MATCH
+
+       Handles nested scrollable code blocks.
+       ------------------------------------------ */
+
+    function scrollToRange(range) {
+        const getRect = () =>
+            range.getClientRects()[0] ||
+            range.getBoundingClientRect();
+
+        let element = range.startContainer.parentElement;
+
+        while (
+            element &&
+            element !== document.body &&
+            element !== document.documentElement
+        ) {
+            const style = getComputedStyle(element);
+            const box = element.getBoundingClientRect();
+            const rect = getRect();
+            const margin = 12;
+
+            if (
+                /auto|scroll|hidden|overlay/.test(style.overflowY) &&
+                element.scrollHeight > element.clientHeight
+            ) {
+                if (rect.top < box.top + margin) {
+                    element.scrollTop += rect.top - box.top - margin;
+                } else if (rect.bottom > box.bottom - margin) {
+                    element.scrollTop += rect.bottom - box.bottom + margin;
+                }
+            }
+
+            if (
+                /auto|scroll|hidden|overlay/.test(style.overflowX) &&
+                element.scrollWidth > element.clientWidth
+            ) {
+                if (rect.left < box.left + margin) {
+                    element.scrollLeft += rect.left - box.left - margin;
+                } else if (rect.right > box.right - margin) {
+                    element.scrollLeft += rect.right - box.right + margin;
+                }
+            }
+
+            element = element.parentElement;
+        }
+
+        const rect = getRect();
+
+        window.scrollBy({
+            top: rect.top - window.innerHeight * 0.25,
+            behavior: "auto"
+        });
+    }
+
+    /* ------------------------------------------
+       NAVIGATE AND HIGHLIGHT
+       ------------------------------------------ */
+
+    function goTo(index) {
+        const match = matches[index];
+        if (!match) return;
+
+        // Only now do we examine the DOM.
+        const range = findRange(index, input.value.trim().replace(/\s+/g, " "));
+
+        if (!range) return;
+
+        selected = index;
+
+        clearHighlight();
+
+        if (CSS.highlights && typeof Highlight !== "undefined") {
+            CSS.highlights.set(
+                HIGHLIGHT_NAME,
+                new Highlight(range)
+            );
+        } else {
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            usedSelection = true;
+        }
+
+        scrollToRange(range);
+
+        results.querySelectorAll(".summary-search-result")
+            .forEach((button, i) => {
+                button.classList.toggle("is-selected", i === index);
+            });
+    }
+
+    /* ------------------------------------------
+       RENDER SEARCH RESULTS
+       ------------------------------------------ */
+
+    function render() {
+        results.replaceChildren();
+        results.hidden = false;
+
+        const count = document.createElement("div");
+        count.className = "summary-search-count";
+        count.textContent = `${matches.length} occurrence(s)`;
+        results.append(count);
+
+        matches.slice(0, visibleCount).forEach((match, index) => {
+            const button = document.createElement("button");
+
+            button.type = "button";
+            button.className = "summary-search-result";
+
+            if (index === selected) {
+                button.classList.add("is-selected");
+            }
+
+            const from = Math.max(0, match.start - 60);
+            const to = Math.min(text.length, match.end + 60);
+
+            const before =
+                (from > 0 ? "…" : "") +
+                text.slice(from, match.start);
+
+            const highlighted = text.slice(match.start, match.end);
+
+            const after =
+                text.slice(match.end, to) +
+                (to < text.length ? "…" : "");
+
+            button.append(document.createTextNode(before));
+
+            const strong = document.createElement("strong");
+            strong.textContent = highlighted;
+
+            button.append(strong);
+            button.append(document.createTextNode(after));
+
+            button.addEventListener("click", () => goTo(index));
+
+            results.append(button);
+        });
+
+        if (visibleCount < matches.length) {
+            const more = document.createElement("button");
+
+            more.type = "button";
+            more.className = "summary-search-more";
+            more.textContent = "Show more results";
+
+            more.addEventListener("click", () => {
+                visibleCount += PAGE_SIZE;
+                render();
+            });
+
+            results.append(more);
+        }
+    }
+
+    /* ------------------------------------------
+       SEARCH THE SINGLE TEXT STRING
+       ------------------------------------------ */
+
+    function search() {
+        const query = input.value.trim();
+
+        matches = [];
+        selected = -1;
+        visibleCount = PAGE_SIZE;
+
+        clearHighlight();
+
+        if (!query) {
+            results.hidden = true;
+            results.replaceChildren();
+            return;
+        }
+
+        const pattern = query
+            .split(/\s+/)
+            .map(escapeRegex)
+            .join("\\s+");
+
+        const regex = new RegExp(pattern, "gi");
+
+        for (const found of text.matchAll(regex)) {
+            matches.push({
+                start: found.index,
+                end: found.index + found[0].length
+            });
+        }
+
+        render();
+    }
+
+    input.addEventListener("input", search);
+
+    /* ------------------------------------------
+       KEYBOARD NAVIGATION
+       ------------------------------------------ */
+
+    input.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+            results.hidden = true;
+            clearHighlight();
+            return;
+        }
+
+        if (!matches.length) return;
+
+        if (event.key === "Enter") {
+            event.preventDefault();
+            goTo(Math.max(0, selected));
+            return;
+        }
+
+        if (event.key === "ArrowDown") {
+            event.preventDefault();
+            selected = Math.min(selected + 1, matches.length - 1);
+        } else if (event.key === "ArrowUp") {
+            event.preventDefault();
+            selected = Math.max(selected - 1, 0);
+        } else {
+            return;
+        }
+
+        if (selected >= visibleCount) {
+            visibleCount = selected + 1;
+        }
+
+        render();
+
+        results.querySelector(".is-selected")?.scrollIntoView({
+            block: "nearest",
+            behavior: "auto"
+        });
+    });
+
+    input.addEventListener("focus", () => {
+        if (input.value.trim()) {
+            results.hidden = false;
+        }
+    });
+});
 

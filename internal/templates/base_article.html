@@ -61,6 +61,31 @@
 
         <aside id="article-summary" class="article-summary">
           <div class="summary-inner">
+
+            <!-- ARTICLE SEARCH -->
+            <div class="summary-search" role="search">
+
+                <div class="summary-search-field">
+                    <span class="summary-search-icon" aria-hidden="true">⌕</span>
+
+                    <input
+                        type="search"
+                        id="article-search-input"
+                        placeholder="Search in article..."
+                        aria-label="Search in this article"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+                </div>
+
+                <div
+                    id="article-search-results"
+                    class="summary-search-results"
+                    hidden
+                ></div>
+
+            </div>
+
             <h2>Summary</h2>
             <nav id="summary-content">
               <!-- JS will inject headings here -->

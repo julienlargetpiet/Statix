@@ -4198,4 +4198,192 @@ article :is(h1, h2, h3, h4, h5, h6) a {
 
 
 
+/* ==========================================
+   ARTICLE SEARCH
+   ========================================== */
+
+.article-summary .summary-search {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 1.5rem;
+}
+
+/* Search field */
+
+.article-summary .summary-search-field {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.8rem 1rem;
+
+    background: var(--bg-soft);
+    color: var(--text-main);
+
+    border: 3px solid var(--brutal-ink);
+    border-radius: 0;
+    box-shadow: none;
+
+    transition: none;
+}
+
+.article-summary .summary-search-field:hover {
+    background: var(--bg-hover);
+    border-color: var(--accent);
+}
+
+.article-summary .summary-search-field:focus-within {
+    border-color: var(--accent);
+}
+
+/* Magnifying glass */
+
+.article-summary .summary-search-icon {
+    font-size: 1.6rem;
+    line-height: 1;
+    font-weight: 900;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+/* Actual input */
+
+.article-summary #article-search-input {
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    padding: 0;
+
+    background: transparent;
+    color: var(--text-main);
+
+    border: 0;
+    border-radius: 0;
+    outline: none;
+    box-shadow: none;
+
+    font-family: var(--font-main);
+    font-size: 0.9rem;
+    font-weight: 800;
+}
+
+.article-summary #article-search-input::placeholder {
+    color: var(--text-main);
+    opacity: 0.65;
+}
+
+/* Results container */
+
+.article-summary .summary-search-results {
+    margin-top: 0.7rem;
+
+    max-height: min(35vh, 20rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+
+    background: var(--bg-soft);
+    border: 2px solid var(--brutal-ink);
+    border-radius: 0;
+
+    box-shadow: none;
+}
+
+.article-summary .summary-search-results[hidden] {
+    display: none;
+}
+
+/* Match count */
+
+.article-summary .summary-search-count {
+    padding: 0.6rem 0.75rem;
+
+    background: var(--bg-main);
+    color: var(--text-main);
+
+    border-bottom: 2px solid var(--brutal-ink);
+
+    font-family: var(--font-main);
+    font-size: 0.75rem;
+    font-weight: 900;
+}
+
+/* Individual search results */
+
+.article-summary .summary-search-result {
+    display: block;
+    width: 100%;
+    padding: 0.75rem;
+
+    background: transparent;
+    color: var(--text-main);
+
+    border: 0;
+    border-bottom: 1px solid var(--border-soft);
+    border-radius: 0;
+
+    box-shadow: none;
+
+    font-family: var(--font-main);
+    font-size: 0.78rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;
+
+    white-space: normal;
+    overflow-wrap: anywhere;
+
+    cursor: url("/assets/cursors/cursor-hand.png") 12 3, pointer;
+}
+
+.article-summary .summary-search-result:hover,
+.article-summary .summary-search-result.is-selected {
+    background: var(--bg-hover);
+    color: var(--text-main);
+}
+
+.article-summary .summary-search-result strong {
+    color: var(--accent);
+    font-weight: 900;
+}
+
+/* Show more results */
+
+.article-summary .summary-search-more {
+    display: block;
+    width: 100%;
+    padding: 0.65rem;
+
+    background: var(--bg-main);
+    color: var(--text-main);
+
+    border: 0;
+    border-radius: 0;
+
+    font-family: var(--font-main);
+    font-weight: 900;
+    font-size: 0.75rem;
+
+    cursor: pointer;
+}
+
+.article-summary .summary-search-more:hover {
+    background: var(--bg-hover);
+}
+
+/* Highlight the selected match inside the article */
+
+::highlight(article-search-match) {
+    background-color: var(--accent);
+    color: var(--bg-main);
+}
+
+/* Fallback for browsers without CSS Custom Highlights */
+
+.article-content ::selection {
+    background-color: var(--accent);
+    color: var(--bg-main);
+}
+
 
