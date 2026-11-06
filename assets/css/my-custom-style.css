@@ -4386,4 +4386,24 @@ article :is(h1, h2, h3, h4, h5, h6) a {
     color: var(--bg-main);
 }
 
+/* Remove focus styling from the search bar */
+.article-summary .summary-search-field:focus-within {
+    border-color: var(--brutal-ink);
+    outline: none;
+    box-shadow: none;
+    transform: none;
+}
+
+/* Remove the browser's default input focus styling */
+.article-summary #article-search-input:focus,
+.article-summary #article-search-input:focus-visible {
+    outline: none;
+    box-shadow: none;
+}
+
+
+.article-summary #article-search-input {
+    font-size: max(16px, 1rem);
+}
+
 
