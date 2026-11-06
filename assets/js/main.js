@@ -788,6 +788,47 @@ document.addEventListener("DOMContentLoaded", () => {
             .sort((a, b) => b.score - a.score);
     }
 
+    function appendHighlightedText(element, text, query) {
+        const words = [...new Set(
+            normalize(query).split(/\s+/).filter(Boolean)
+        )];
+    
+        if (!words.length) {
+            element.textContent = text;
+            return;
+        }
+    
+        const escapeRegex = word =>
+            word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    
+        const regex = new RegExp(
+            words.sort((a, b) => b.length - a.length)
+                .map(escapeRegex)
+                .join("|"),
+            "g"
+        );
+    
+        const normalizedText = normalize(text);
+        let cursor = 0;
+    
+        for (const match of normalizedText.matchAll(regex)) {
+            const start = match.index;
+            const end = start + match[0].length;
+    
+            element.append(document.createTextNode(
+                text.slice(cursor, start)
+            ));
+    
+            const mark = document.createElement("mark");
+            mark.textContent = text.slice(start, end);
+    
+            element.append(mark);
+            cursor = end;
+        }
+    
+        element.append(document.createTextNode(text.slice(cursor)));
+    }
+
     function renderResults() {
         const query = input.value.trim();
         const matches = findArticles(query);
@@ -820,15 +861,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const title = document.createElement("span");
             title.className = "home-search-result-title";
-            title.textContent = article.title;
+            // title.textContent = article.title;
+            appendHighlightedText(title, article.title, query);
 
             const category = document.createElement("span");
             category.className = "home-search-result-category";
-            category.textContent = article.category;
+            //category.textContent = article.category;
+            appendHighlightedText(category, article.category, query);
 
             const description = document.createElement("span");
             description.className = "home-search-result-description";
-            description.textContent = article.description;
+            //description.textContent = article.description;
+            appendHighlightedText(description, article.description, query);
 
             link.append(title, category, description);
             item.appendChild(link);
