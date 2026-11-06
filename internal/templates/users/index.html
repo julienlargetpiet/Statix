@@ -149,23 +149,24 @@
   <div class="card-grid">
 
     {{ range $i, $a := .Articles }}
-      {{ if $a.IsPublic }}
-
-          <a
-            href="/articles/{{ $a.TitleURL }}.html"
-            class="doc-card card-variant-{{ add (mod $i 4) 1 }}"
-          >
-
+    
+        <a
+            href="{{ if $a.IsPublic }}/articles/{{ $a.TitleURL }}.html{{ else }}/assets/common_files/support.html{{ end }}"
+            class="doc-card card-variant-{{ add (mod $i 4) 1 }} {{ if not $a.IsPublic }} locked {{ end }}"
+        >
+    
             <span class="subject-bookmark">
-              {{ $a.Slug }}
+                {{ $a.Slug }}
             </span>
-
-            <h3 style="font-weight: normal;">{{ $a.Title }}</h3>
-
+    
+            <h3 style="font-weight: normal;">
+                {{ $a.Title }}
+            </h3>
+    
             <p>{{ excerpt $a.HTML 130 }}</p>
-
-          </a>
-      {{ end }}
+    
+        </a>
+    
     {{ end }}
 
   </div>

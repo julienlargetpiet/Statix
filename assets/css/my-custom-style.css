@@ -4653,3 +4653,58 @@ article :is(h1, h2, h3, h4, h5, h6) a {
         font-size: 1.3rem;
     }
 }
+
+
+/* ==========================================
+   LOCKED ARTICLE CARD
+   ========================================== */
+
+.doc-card.locked {
+    position: relative;
+
+    border: 2px dashed var(--brutal-ink);
+    box-shadow: 4px 4px 0 var(--brutal-shadow);
+}
+
+/* Lock icon in the top-right corner */
+
+.doc-card.locked::after {
+    content: "🔒";
+
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 2rem;
+    height: 2rem;
+
+    background: var(--bg-main);
+    border: 2px solid var(--brutal-ink);
+    box-shadow: 2px 2px 0 var(--brutal-shadow);
+
+    font-size: 1rem;
+    line-height: 1;
+
+    pointer-events: none;
+}
+
+/* Prevent the bookmark from overlapping the lock */
+
+.doc-card.locked .subject-bookmark {
+    max-width: calc(100% - 3rem);
+}
+
+/* Keep the same hover behavior as regular cards */
+
+@media (hover: hover) and (pointer: fine) {
+    .doc-card.locked:hover {
+        border-color: var(--accent);
+        transform: translateY(-4px);
+        box-shadow: 6px 6px 0 var(--brutal-shadow);
+    }
+}
+

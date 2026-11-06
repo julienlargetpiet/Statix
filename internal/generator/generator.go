@@ -11,6 +11,8 @@ import (
     "encoding/xml"
     "time"
     "fmt"
+    "crypto/rand"
+    "encoding/hex"
 
 	"blog/internal/model"
 	"blog/internal/utils"
@@ -131,39 +133,39 @@ func (g *Generator) BuildArticleViewsForSubject(subject_id int64) []model.Articl
 
 var htmlTagRe = regexp.MustCompile(`<[^>]+>`)
 
-//func excerpt(htmlContent string, words int) string {
-//	// 1. Strip HTML tags
-//	text := htmlTagRe.ReplaceAllString(htmlContent, "")
-//	text = html.UnescapeString(text)
-//
-//	// 2. Normalize whitespace
-//	fields := strings.Fields(text)
-//	if len(fields) <= words {
-//		return strings.Join(fields, " ")
-//	}
-//
-//	// 3. Cut + ellipsis
-//	return strings.Join(fields[:words], " ") + "…"
-//}
+func excerpt(htmlContent string, words int) string {
+	// 1. Strip HTML tags
+	text := htmlTagRe.ReplaceAllString(htmlContent, "")
+	text = html.UnescapeString(text)
 
-func excerpt(htmlContent string, maxChars int) string {
-    // Strip HTML tags
-    text := htmlTagRe.ReplaceAllString(htmlContent, "")
-    text = html.UnescapeString(text)
+	// 2. Normalize whitespace
+	fields := strings.Fields(text)
+	if len(fields) <= words {
+		return strings.Join(fields, " ")
+	}
 
-    // Normalize whitespace
-    text = strings.Join(strings.Fields(text), " ")
-
-    // Convert to runes to handle Unicode
-    chars := []rune(text)
-
-    if len(chars) <= maxChars {
-        return text
-    }
-
-    // Truncate and add ellipsis
-    return strings.TrimSpace(string(chars[:maxChars])) + "…"
+	// 3. Cut + ellipsis
+	return strings.Join(fields[:words], " ") + "…"
 }
+
+//func excerpt(htmlContent string, maxChars int) string {
+//    // Strip HTML tags
+//    text := htmlTagRe.ReplaceAllString(htmlContent, "")
+//    text = html.UnescapeString(text)
+//
+//    // Normalize whitespace
+//    text = strings.Join(strings.Fields(text), " ")
+//
+//    // Convert to runes to handle Unicode
+//    chars := []rune(text)
+//
+//    if len(chars) <= maxChars {
+//        return text
+//    }
+//
+//    // Truncate and add ellipsis
+//    return strings.TrimSpace(string(chars[:maxChars])) + "…"
+//}
 
 type Generator struct {
     AuthorContent template.HTML
@@ -284,10 +286,26 @@ func (g *Generator) buildArticlesForSubject(subject_id int64) error {
 
 	for _, view := range views {
 
+        var cur_URL string
+
+        if !view.IsPublic {
+
+            b := make([]byte, 32)
+
+            if _, err := rand.Read(b); err != nil {
+                return err
+            }
+
+            cur_URL = hex.EncodeToString(b) + ".html"
+
+        } else {
+            cur_URL = view.TitleURL + ".html"
+        }
+
 		filename := filepath.Join(
 			g.OutDir,
 			"articles",
-			view.TitleURL + ".html",
+			cur_URL,
 		)
 
         if err := writeFileAtomic(filename, func(f *os.File) error {
@@ -313,10 +331,26 @@ func (g *Generator) buildArticles() error {
 
 	for _, view := range views {
 
+        var cur_URL string
+
+        if !view.IsPublic {
+
+            b := make([]byte, 32)
+
+            if _, err := rand.Read(b); err != nil {
+                return err
+            }
+
+            cur_URL = hex.EncodeToString(b) + ".html"
+
+        } else {
+            cur_URL = view.TitleURL + ".html"
+        }
+
 		filename := filepath.Join(
 			g.OutDir,
 			"articles",
-			view.TitleURL + ".html",
+			cur_URL,
 		)
 
         if err := writeFileAtomic(filename, func(f *os.File) error {
@@ -355,10 +389,26 @@ func (g *Generator) buildArticle(title_url, slug_val string) error {
             CreatedAt: article.CreatedAt,
         }
 
+    var cur_URL string
+
+    if !view.IsPublic {
+
+        b := make([]byte, 32)
+
+        if _, err := rand.Read(b); err != nil {
+            return err
+        }
+
+        cur_URL = hex.EncodeToString(b) + ".html"
+
+    } else {
+        cur_URL = view.TitleURL + ".html"
+    }
+
 	filename := filepath.Join(
 		g.OutDir,
 		"articles",
-		view.TitleURL + ".html",
+		cur_URL,
 	)
 
     return writeFileAtomic(filename, func(f *os.File) error {
@@ -556,6 +606,12 @@ func (g *Generator) BuildSitemap() error {
     }
 
     for _, a := range g.Articles {
+    
+        // Exclude private articles from the sitemap.
+        if !a.IsPublic {
+            continue
+        }
+    
         urls = append(urls, URL{
             Loc:     fmt.Sprintf("%s/articles/%s.html", base, a.TitleURL),
             LastMod: a.CreatedAt.Format("2006-01-02"),
@@ -623,11 +679,14 @@ func (g *Generator) BuildRSS() error {
     items := make([]Item, 0, len(g.Articles))
 
     for _, a := range g.Articles {
-        if !a.IsPublic {
-            continue
-        }
 
-        link := fmt.Sprintf("%s/articles/%s.html", base, a.TitleURL)
+        var link string
+
+        if !a.IsPublic {
+            link = fmt.Sprintf("%s/support.html", base)
+        } else {
+            link = fmt.Sprintf("%s/articles/%s.html", base, a.TitleURL)
+        }
 
         items = append(items, Item{
             Title:   a.Title,
@@ -684,11 +743,14 @@ func (g *Generator) BuildLLMS() error {
 	b.WriteString(marker + "\n\n")
 
 	for _, a := range g.Articles {
-		if !a.IsPublic {
-			continue
-		}
 
-		link := fmt.Sprintf("%s/articles/%s.html", base, a.TitleURL)
+        var link string
+
+		if !a.IsPublic {
+			link = fmt.Sprintf("%s/support.html", base)
+		} else {
+		    link = fmt.Sprintf("%s/articles/%s.html", base, a.TitleURL)
+        }
 
 		fmt.Fprintf(&b, "- [%s](%s)", a.Title, link)
 		b.WriteByte('\n')
@@ -696,10 +758,11 @@ func (g *Generator) BuildLLMS() error {
 
 	data := []byte(b.String())
 
-	return writeFileAtomic("dist/llms.txt" + , func(f *os.File) error {
-		_, err := f.Write(data)
-		return err
-	})
+    return writeFileAtomic("dist/llms.txt", func(f *os.File) error {
+        _, err := f.Write(data)
+        return err
+    })
+
 }
 
 
