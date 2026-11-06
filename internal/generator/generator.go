@@ -683,7 +683,7 @@ func (g *Generator) BuildRSS() error {
         var link string
 
         if !a.IsPublic {
-            link = fmt.Sprintf("%s/support.html", base)
+            link = fmt.Sprintf("%s/assets/common_files/support.html", base)
         } else {
             link = fmt.Sprintf("%s/articles/%s.html", base, a.TitleURL)
         }
@@ -747,7 +747,7 @@ func (g *Generator) BuildLLMS() error {
         var link string
 
 		if !a.IsPublic {
-			link = fmt.Sprintf("%s/support.html", base)
+			link = fmt.Sprintf("%s/assets/common_files/support.html", base)
 		} else {
 		    link = fmt.Sprintf("%s/articles/%s.html", base, a.TitleURL)
         }
