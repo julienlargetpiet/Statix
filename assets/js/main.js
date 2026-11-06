@@ -1423,11 +1423,6 @@ document.addEventListener("DOMContentLoaded", () => {
        ------------------------------------------ */
 
     input.addEventListener("keydown", event => {
-        if (event.key === "Escape") {
-            results.hidden = true;
-            clearHighlight();
-            return;
-        }
 
         if (!matches.length) return;
 
@@ -1464,5 +1459,22 @@ document.addEventListener("DOMContentLoaded", () => {
             results.hidden = false;
         }
     });
+
+    document.addEventListener("keydown", event => {
+        if (event.key !== "Escape") return;
+    
+        if (!input.value && results.hidden) return;
+    
+        event.preventDefault();
+    
+        input.value = "";
+        search();
+        input.blur();
+    });
+
 });
+
+
+
+
 
