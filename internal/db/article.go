@@ -3,6 +3,8 @@ package db
 import (
 	"database/sql"
     "errors"
+    "crypto/rand"
+    "encoding/hex"
 
 	"blog/internal/model"
 	"blog/internal/utils"
@@ -98,18 +100,39 @@ func (r *ArticleRepo) GetHTMLByID(id int64) (string, error) {
 	return html, err
 }
 
-func (r *ArticleRepo) Update(id int64, 
-                             title string, 
-                             subjectId int64, 
-                             is_public bool,
-                             html string) error {
-	_, err := r.DB.Exec(`
-		UPDATE articles
-		SET title = ?, title_url = ?, subject_id = ?, html = ?, is_public = ?
-		WHERE id = ?
-	`, title, utils.Slugify(title), subjectId, html, is_public, id)
-	return err
+func (r *ArticleRepo) Update(
+    id int64,
+    title string,
+    subjectId int64,
+    is_public bool,
+    html string,
+) error {
+
+    _, err := r.DB.Exec(`
+        UPDATE articles
+        SET
+            title = ?,
+            title_url = CASE
+                WHEN ? THEN ?
+                ELSE title_url
+            END,
+            subject_id = ?,
+            html = ?,
+            is_public = ?
+        WHERE id = ?
+    `,
+        title,
+        is_public,
+        utils.Slugify(title),
+        subjectId,
+        html,
+        is_public,
+        id,
+    )
+
+    return err
 }
+
 
 func (r *ArticleRepo) Delete(id int64) error {
 	_, err := r.DB.Exec(
@@ -119,20 +142,39 @@ func (r *ArticleRepo) Delete(id int64) error {
 	return err
 }
 
-func (r *ArticleRepo) Create(title string, 
-                             subjectId int64,
-                             is_public bool,
-                             html string) (int64, error) {
-	res, err := r.DB.Exec(`
-		INSERT INTO articles (title, title_url, subject_id, html, is_public, created_at)
-		VALUES (?, ?, ?, ?, ?, NOW())
-	`, title, utils.Slugify(title), subjectId, html, is_public)
-	if err != nil {
-		return 0, err
-	}
+func (r *ArticleRepo) Create(
+    title string,
+    subjectId int64,
+    is_public bool,
+    html string,
+) (int64, error) {
 
-	return res.LastInsertId()
+    var titleURL string
+
+    if is_public {
+        titleURL = utils.Slugify(title)
+    } else {
+        b := make([]byte, 32)
+
+        if _, err := rand.Read(b); err != nil {
+            return 0, err
+        }
+
+        titleURL = hex.EncodeToString(b)
+    }
+
+    res, err := r.DB.Exec(`
+        INSERT INTO articles (title, title_url, subject_id, html, is_public, created_at)
+        VALUES (?, ?, ?, ?, ?, NOW())
+    `, title, titleURL, subjectId, html, is_public)
+
+    if err != nil {
+        return 0, err
+    }
+
+    return res.LastInsertId()
 }
+
 
 func (r *ArticleRepo) GetDefaultSubjectID() (int64, error) {
 	var id int64
@@ -306,3 +348,18 @@ func (r *ArticleRepo) ListIDAndTitle() ([]struct {
 
 	return result, nil
 }
+
+func (r *ArticleRepo) GetTitleURLByTitle(title string) (string, error) {
+    var titleURL string
+
+    err := r.DB.QueryRow(`
+        SELECT title_url
+        FROM articles
+        WHERE title = ?
+    `, title).Scan(&titleURL)
+
+    return titleURL, err
+}
+
+
+

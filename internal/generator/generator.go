@@ -11,11 +11,9 @@ import (
     "encoding/xml"
     "time"
     "fmt"
-    "crypto/rand"
-    "encoding/hex"
 
 	"blog/internal/model"
-	"blog/internal/utils"
+	//"blog/internal/utils"
     "blog/internal/db"
 )
 
@@ -214,7 +212,7 @@ func (g *Generator) LocalizedBuild(title string,
                                    subject_id int64,
                                    is_deletion bool) error {
 
-    title_url := utils.Slugify(title)
+    //title_url := utils.Slugify(title)
 
     //if is_deletion {
     //    os.Remove("/dist/articles/" + title_url + ".html")
@@ -238,7 +236,13 @@ func (g *Generator) LocalizedBuild(title string,
 	}
 
     if !is_deletion {
-	    return g.buildArticle(title_url, subject_slug)
+    
+        titleURL, err := g.ArticleRepo.GetTitleURLByTitle(title)
+        if err != nil {
+            return err
+        }
+    
+        return g.buildArticle(titleURL, subject_slug)
     }
 
     return nil
@@ -286,26 +290,26 @@ func (g *Generator) buildArticlesForSubject(subject_id int64) error {
 
 	for _, view := range views {
 
-        var cur_URL string
+        //var cur_URL string
 
-        if !view.IsPublic {
+        //if !view.IsPublic {
 
-            b := make([]byte, 32)
+        //    b := make([]byte, 32)
 
-            if _, err := rand.Read(b); err != nil {
-                return err
-            }
+        //    if _, err := rand.Read(b); err != nil {
+        //        return err
+        //    }
 
-            cur_URL = hex.EncodeToString(b) + ".html"
+        //    cur_URL = hex.EncodeToString(b) + ".html"
 
-        } else {
-            cur_URL = view.TitleURL + ".html"
-        }
+        //} else {
+        //    cur_URL = view.TitleURL + ".html"
+        //}
 
 		filename := filepath.Join(
 			g.OutDir,
 			"articles",
-			cur_URL,
+			view.TitleURL + ".html",
 		)
 
         if err := writeFileAtomic(filename, func(f *os.File) error {
@@ -331,26 +335,26 @@ func (g *Generator) buildArticles() error {
 
 	for _, view := range views {
 
-        var cur_URL string
+        //var cur_URL string
 
-        if !view.IsPublic {
+        //if !view.IsPublic {
 
-            b := make([]byte, 32)
+        //    b := make([]byte, 32)
 
-            if _, err := rand.Read(b); err != nil {
-                return err
-            }
+        //    if _, err := rand.Read(b); err != nil {
+        //        return err
+        //    }
 
-            cur_URL = hex.EncodeToString(b) + ".html"
+        //    cur_URL = hex.EncodeToString(b) + ".html"
 
-        } else {
-            cur_URL = view.TitleURL + ".html"
-        }
+        //} else {
+        //    cur_URL = view.TitleURL + ".html"
+        //}
 
 		filename := filepath.Join(
 			g.OutDir,
 			"articles",
-			cur_URL,
+			view.TitleURL + ".html",
 		)
 
         if err := writeFileAtomic(filename, func(f *os.File) error {
@@ -389,26 +393,26 @@ func (g *Generator) buildArticle(title_url, slug_val string) error {
             CreatedAt: article.CreatedAt,
         }
 
-    var cur_URL string
+    //var cur_URL string
 
-    if !view.IsPublic {
+    //if !view.IsPublic {
 
-        b := make([]byte, 32)
+    //    b := make([]byte, 32)
 
-        if _, err := rand.Read(b); err != nil {
-            return err
-        }
+    //    if _, err := rand.Read(b); err != nil {
+    //        return err
+    //    }
 
-        cur_URL = hex.EncodeToString(b) + ".html"
+    //    cur_URL = hex.EncodeToString(b) + ".html"
 
-    } else {
-        cur_URL = view.TitleURL + ".html"
-    }
+    //} else {
+    //    cur_URL = view.TitleURL + ".html"
+    //}
 
 	filename := filepath.Join(
 		g.OutDir,
 		"articles",
-		cur_URL,
+		view.TitleURL + ".html",
 	)
 
     return writeFileAtomic(filename, func(f *os.File) error {
