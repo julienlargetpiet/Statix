@@ -5,6 +5,8 @@ import (
     "errors"
     "crypto/rand"
     "encoding/hex"
+    "os"
+    "path/filepath"
 
 	"blog/internal/model"
 	"blog/internal/utils"
@@ -100,6 +102,40 @@ func (r *ArticleRepo) GetHTMLByID(id int64) (string, error) {
 	return html, err
 }
 
+//func (r *ArticleRepo) Update(
+//    id int64,
+//    title string,
+//    subjectId int64,
+//    is_public bool,
+//    html string,
+//) error {
+//
+//    _, err := r.DB.Exec(`
+//        UPDATE articles
+//        SET
+//            title = ?,
+//            title_url = CASE
+//                WHEN ? THEN ?
+//                ELSE title_url
+//            END,
+//            subject_id = ?,
+//            html = ?,
+//            is_public = ?
+//        WHERE id = ?
+//    `,
+//        title,
+//        is_public,
+//        utils.Slugify(title),
+//        subjectId,
+//        html,
+//        is_public,
+//        id,
+//    )
+//
+//    return err
+//}
+
+
 func (r *ArticleRepo) Update(
     id int64,
     title string,
@@ -108,30 +144,60 @@ func (r *ArticleRepo) Update(
     html string,
 ) error {
 
-    _, err := r.DB.Exec(`
-        UPDATE articles
-        SET
-            title = ?,
-            title_url = CASE
-                WHEN ? THEN ?
-                ELSE title_url
-            END,
-            subject_id = ?,
-            html = ?,
-            is_public = ?
-        WHERE id = ?
-    `,
-        title,
-        is_public,
-        utils.Slugify(title),
-        subjectId,
-        html,
-        is_public,
-        id,
-    )
+    // 1. Retrieve the previous URL and visibility.
+    var oldURL string
+    var wasPublic bool
 
-    return err
+    err := r.DB.QueryRow(`
+        SELECT title_url, is_public
+        FROM articles
+        WHERE id = ?
+    `, id).Scan(&oldURL, &wasPublic)
+
+    if err != nil {
+        return err
+    }
+
+    // 2. Determine the new URL.
+    newURL := oldURL
+
+    if is_public {
+        newURL = utils.Slugify(title)
+
+    } else if wasPublic {
+        // Public → Private: generate a random 64-character URL.
+        b := make([]byte, 32)
+
+        if _, err := rand.Read(b); err != nil {
+            return err
+        }
+
+        newURL = hex.EncodeToString(b)
+    }
+
+    // 3. Update the database.
+    _, err = r.DB.Exec(`
+        UPDATE articles
+        SET title = ?, title_url = ?, subject_id = ?, html = ?, is_public = ?
+        WHERE id = ?
+    `, title, newURL, subjectId, html, is_public, id)
+
+    if err != nil {
+        return err
+    }
+
+    // 4. Remove the old HTML file if the URL changed.
+    if oldURL != newURL {
+        oldFile := filepath.Join("dist", "articles", oldURL+".html")
+
+        if err := os.Remove(oldFile); err != nil && !os.IsNotExist(err) {
+            return err
+        }
+    }
+
+    return nil
 }
+
 
 
 func (r *ArticleRepo) Delete(id int64) error {

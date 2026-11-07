@@ -7,6 +7,7 @@ import (
 	"net/http"
     "strings"
     "os"
+    "fmt"
 )
 
 const sessionCookie = "admin_session"
@@ -55,6 +56,9 @@ func isAuthenticated(r *http.Request, secret string) bool {
 }
 
 func (s *Server) requireAuth(next http.HandlerFunc) http.HandlerFunc {
+
+    fmt.Printf("okok")
+
 	return func(w http.ResponseWriter, r *http.Request) {
 
 		publishToken := os.Getenv("STATIX_PUBLISH_TOKEN")

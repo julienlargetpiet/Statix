@@ -451,6 +451,9 @@ func (s *Server) handleUpdateAuthor(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleEditArticle(w http.ResponseWriter, r *http.Request) {
+
+    fmt.Printf("lloo")
+
 	idStr := strings.TrimPrefix(r.URL.Path, "/admin/articles/")
 	if idStr == "" {
 		http.NotFound(w, r)
@@ -504,6 +507,20 @@ func (s *Server) handleEditArticle(w http.ResponseWriter, r *http.Request) {
 
         if exists {
 	    	http.Error(w, "Article Title already exists", http.StatusConflict)
+            return
+        }
+
+        if _, err := repo.GetByID(id); err != nil {
+            if errors.Is(err, sql.ErrNoRows) {
+                http.Error(
+                    w,
+                    fmt.Sprintf("Article ID %d does not exist", id),
+                    http.StatusNotFound,
+                )
+                return
+            }
+        
+            http.Error(w, err.Error(), http.StatusInternalServerError)
             return
         }
 
@@ -602,6 +619,9 @@ func (s *Server) handleDeleteArticle(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *Server) handleNewArticle(w http.ResponseWriter, r *http.Request) {
+
+    fmt.Printf("DEBUG: handleNewArticle called, method=%s", r.Method)
+
 	articleRepo := db.ArticleRepo{DB: s.DB}
 	subjectRepo := db.SubjectRepo{DB: s.DB}
 
@@ -647,12 +667,18 @@ func (s *Server) handleNewArticle(w http.ResponseWriter, r *http.Request) {
             return
         }
 
+        fmt.Printf("DEBUG: About to create article: %q", title)
+
 		// 1️⃣ Insert into DB
         newID, err := articleRepo.Create(title, subjectId, isPublic, html)
         if err != nil {
         	http.Error(w, err.Error(), http.StatusInternalServerError)
         	return
         }
+
+        fmt.Printf("DEBUG: Article created successfully: ID=%d", newID)
+
+        fmt.Printf("DEBUG: Starting localized rebuild")
 
         if err := s.rebuildSiteLocalize(title, subjectId, true, false); err != nil {
         	http.Error(w, err.Error(), http.StatusInternalServerError)
