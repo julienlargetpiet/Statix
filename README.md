@@ -135,6 +135,14 @@ Commands:
 
 ```
 
+## Public VS Private
+
+You can create private articles whose cards will still appear on the homepage. However, these cards will be locked, and clicking on them will redirect visitors to your custom support page at `/assets/common_files/support.html`.
+
+Private articles are assigned randomized URLs.
+
+When a private article becomes public, its URL is changed to the standard slugified version. Conversely, when a public article becomes private, its URL is randomized to prevent access through its previous public URL.
+
 ## A structural hint
 
 I strongly encourage you to maintain a directory called `my_articles` for example containing all the sub-directories of each-one of your articles.
