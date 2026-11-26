@@ -6,9 +6,294 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>404 — Lost in Cyberspace</title>
 <style>
-:root{color-scheme:light;--bg:#f4f1eb;--ink:#292521;--panel:#ebe6df;--accent:#b7473d;--frame:#a47870;--frame-width:16px;--frame-width-horiz:10px}
-:root[data-theme=dark]{color-scheme:dark;--bg:#191817;--ink:#d6d0c8;--panel:#242220;--accent:#d66b5f;--frame:#825650}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;border:solid var(--frame);border-width:var(--frame-width-horiz) var(--frame-width);background:var(--bg);color:var(--ink);font:16px/1.5 monospace}html::before{content:"";position:fixed;inset:0;border:solid var(--frame);border-width:var(--frame-width-horiz) var(--frame-width);pointer-events:none;z-index:10}main{max-width:650px;margin:auto;padding:clamp(16px,4vw,48px) 20px}header{display:flex;justify-content:space-between;align-items:center;gap:12px}h1{font-size:clamp(64px,15vw,116px);line-height:1;margin:24px 0 0;color:var(--accent);letter-spacing:-.08em}h2{margin:0;font-size:clamp(19px,4vw,28px)}p{margin:10px 0 20px}button,a{font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--ink);padding:8px 12px;text-decoration:none;box-shadow:3px 3px 0 var(--ink);cursor:pointer}button:hover,a:hover{color:var(--bg);background:var(--ink)}button:focus-visible,a:focus-visible,canvas:focus-visible{outline:3px dashed var(--accent);outline-offset:4px}.hud{display:flex;justify-content:space-between;gap:8px;font-weight:bold;font-size:13px;padding:10px 12px;border-bottom:2px solid var(--ink)}.cabinet{border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);background:var(--panel)}.screen{position:relative}canvas{display:block;width:100%;height:auto;aspect-ratio: 8/5;image-rendering:pixelated;touch-action:none;background:var(--bg)}.overlay{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:15px;background:var(--bg);gap:10px}.overlay[hidden]{display:none}.overlay strong{font-size:22px;color:var(--accent)}.overlay p{margin:0;font-size:13px}.overlay button{justify-self:center}.controls{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;font-size:13px}.touch{display:flex;gap:10px}.touch button{min-width:48px;touch-action:none}.foot{font-size:12px;opacity:.8;margin-top:24px}@media(max-width:1800px){:root{--frame-width:8px;--frame-width-horiz:5px}}@media(max-width:600px){:root{--frame-width:4px;--frame-width-horiz:3px}main{padding:20px 14px}header{font-size:13px}}
+/* ==========================================
+   THEME VARIABLES
+   ========================================== */
+
+:root {
+    color-scheme: light;
+
+    --bg: #f4f1eb;
+    --ink: #292521;
+    --panel: #ebe6df;
+    --accent: #b7473d;
+    --frame: #a47870;
+
+    --frame-width: 16px;
+    --frame-width-horiz: 10px;
+}
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --bg: #191817;
+    --ink: #d6d0c8;
+    --panel: #242220;
+    --accent: #d66b5f;
+    --frame: #825650;
+}
+
+/* ==========================================
+   BASE / RESET
+   ========================================== */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    /*border: solid var(--frame);
+    border-width: var(--frame-width-horiz) var(--frame-width);
+    */
+
+    background: var(--bg);
+    color: var(--ink);
+
+    font: 16px/1.5 monospace;
+}
+
+/* ==========================================
+   FIXED VIEWPORT FRAME
+   ========================================== */
+
+html::before {
+    content: "";
+    position: fixed;
+
+    inset: 0;
+
+    /*border: solid var(--frame);
+    border-width: var(--frame-width-horiz) var(--frame-width);
+    */
+
+    pointer-events: none;
+    z-index: 10;
+}
+
+/* ==========================================
+   LAYOUT
+   ========================================== */
+
+main {
+    max-width: 650px;
+    margin: auto;
+    padding: clamp(16px, 4vw, 48px) 20px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 12px;
+}
+
+/* ==========================================
+   TYPOGRAPHY
+   ========================================== */
+
+h1 {
+    font-size: clamp(64px, 15vw, 116px);
+    line-height: 1;
+
+    margin: 24px 0 0;
+
+    color: var(--accent);
+    letter-spacing: -0.08em;
+}
+
+h2 {
+    margin: 0;
+    font-size: clamp(19px, 4vw, 28px);
+}
+
+p {
+    margin: 10px 0 20px;
+}
+
+/* ==========================================
+   BUTTONS / LINKS
+   ========================================== */
+
+button,
+a {
+    font: inherit;
+
+    color: var(--ink);
+    background: var(--panel);
+
+    border: 2px solid var(--ink);
+    padding: 8px 12px;
+
+    text-decoration: none;
+    box-shadow: 3px 3px 0 var(--ink);
+
+    cursor: pointer;
+}
+
+button:hover,
+a:hover {
+    color: var(--bg);
+    background: var(--ink);
+}
+
+/* ==========================================
+   KEYBOARD ACCESSIBILITY
+   ========================================== */
+
+button:focus-visible,
+a:focus-visible,
+canvas:focus-visible {
+    outline: 3px dashed var(--accent);
+    outline-offset: 4px;
+}
+
+/* ==========================================
+   GAME HUD
+   ========================================== */
+
+.hud {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    font-weight: bold;
+    font-size: 13px;
+
+    padding: 10px 12px;
+
+    border-bottom: 2px solid var(--ink);
+}
+
+/* ==========================================
+   ARCADE CABINET
+   ========================================== */
+
+.cabinet {
+    border: 3px solid var(--ink);
+    box-shadow: 5px 5px 0 var(--ink);
+
+    background: var(--panel);
+}
+
+/* ==========================================
+   GAME SCREEN
+   ========================================== */
+
+.screen {
+    position: relative;
+}
+
+canvas {
+    display: block;
+
+    width: 100%;
+    height: auto;
+    aspect-ratio: 8 / 5;
+
+    image-rendering: pixelated;
+    touch-action: none;
+
+    background: var(--bg);
+}
+
+/* ==========================================
+   GAME OVERLAY
+   ========================================== */
+
+.overlay {
+    position: absolute;
+    inset: 0;
+
+    display: grid;
+    place-content: center;
+
+    text-align: center;
+
+    padding: 15px;
+    gap: 10px;
+
+    background: var(--bg);
+}
+
+.overlay[hidden] {
+    display: none;
+}
+
+.overlay strong {
+    font-size: 22px;
+    color: var(--accent);
+}
+
+.overlay p {
+    margin: 0;
+    font-size: 13px;
+}
+
+.overlay button {
+    justify-self: center;
+}
+
+/* ==========================================
+   GAME CONTROLS
+   ========================================== */
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 10px;
+    margin-top: 18px;
+
+    font-size: 13px;
+}
+
+/* ==========================================
+   TOUCH CONTROLS
+   ========================================== */
+
+.touch {
+    display: flex;
+    gap: 10px;
+}
+
+.touch button {
+    min-width: 48px;
+    touch-action: none;
+}
+
+/* ==========================================
+   FOOTER
+   ========================================== */
+
+.foot {
+    font-size: 12px;
+    opacity: 0.8;
+
+    margin-top: 24px;
+}
+
+/* ==========================================
+   RESPONSIVE / MOBILE
+   ========================================== */
+
+@media (max-width: 600px) {
+
+    main {
+        padding: 20px 14px;
+    }
+
+    header {
+        font-size: 13px;
+    }
+}
+
 </style>
 </head>
 <body><main>

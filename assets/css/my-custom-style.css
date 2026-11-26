@@ -4739,15 +4739,19 @@ article :is(h1, h2, h3, h4, h5, h6) a {
     --frame-color: #825650;
 }
 
+/*
+
 body {
     min-height: 100vh;
 
     border: solid var(--frame-color);
     border-width: var(--frame-width-horiz) var(--frame-width);
 }
+*/
 
 /* Fixed viewport frame */
 
+/*
 html::before {
     content: "";
     position: fixed;
@@ -4759,12 +4763,23 @@ html::before {
 
     pointer-events: none;
     z-index: 110;
-}
+}*/
 
 /* Keep the sticky navigation below the frame */
 
-.topbar {
+/*.topbar {
     top: var(--frame-width-horiz);
+}*/
+
+.topbar {
+    top: 0;
+
+    padding-top: calc(
+        env(safe-area-inset-top, 0px)
+        + var(--frame-width-horiz)
+    );
+
+    background-color: var(--bg-main);
 }
 
 /* Smaller desktop screens */
