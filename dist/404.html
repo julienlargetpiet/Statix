@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>404 — Lost in Cyberspace</title>
+<style>
+:root{color-scheme:light;--bg:#f4f1eb;--ink:#292521;--panel:#ebe6df;--accent:#b7473d;--frame:#a47870;--frame-width:16px;--frame-width-horiz:10px}
+:root[data-theme=dark]{color-scheme:dark;--bg:#191817;--ink:#d6d0c8;--panel:#242220;--accent:#d66b5f;--frame:#825650}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;border:solid var(--frame);border-width:var(--frame-width-horiz) var(--frame-width);background:var(--bg);color:var(--ink);font:16px/1.5 monospace}html::before{content:"";position:fixed;inset:0;border:solid var(--frame);border-width:var(--frame-width-horiz) var(--frame-width);pointer-events:none;z-index:10}main{max-width:650px;margin:auto;padding:clamp(16px,4vw,48px) 20px}header{display:flex;justify-content:space-between;align-items:center;gap:12px}h1{font-size:clamp(64px,15vw,116px);line-height:1;margin:24px 0 0;color:var(--accent);letter-spacing:-.08em}h2{margin:0;font-size:clamp(19px,4vw,28px)}p{margin:10px 0 20px}button,a{font:inherit;color:var(--ink);background:var(--panel);border:2px solid var(--ink);padding:8px 12px;text-decoration:none;box-shadow:3px 3px 0 var(--ink);cursor:pointer}button:hover,a:hover{color:var(--bg);background:var(--ink)}button:focus-visible,a:focus-visible,canvas:focus-visible{outline:3px dashed var(--accent);outline-offset:4px}.hud{display:flex;justify-content:space-between;gap:8px;font-weight:bold;font-size:13px;padding:10px 12px;border-bottom:2px solid var(--ink)}.cabinet{border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);background:var(--panel)}.screen{position:relative}canvas{display:block;width:100%;height:auto;aspect-ratio: 8/5;image-rendering:pixelated;touch-action:none;background:var(--bg)}.overlay{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:15px;background:var(--bg);gap:10px}.overlay[hidden]{display:none}.overlay strong{font-size:22px;color:var(--accent)}.overlay p{margin:0;font-size:13px}.overlay button{justify-self:center}.controls{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px;font-size:13px}.touch{display:flex;gap:10px}.touch button{min-width:48px;touch-action:none}.foot{font-size:12px;opacity:.8;margin-top:24px}@media(max-width:1800px){:root{--frame-width:8px;--frame-width-horiz:5px}}@media(max-width:600px){:root{--frame-width:4px;--frame-width-horiz:3px}main{padding:20px 14px}header{font-size:13px}}
+</style>
+</head>
+<body><main>
+<header><a href="/">&lt; Back home</a><button id="theme" type="button" aria-label="Toggle color theme">⏾</button></header>
+<h1>404</h1><h2>Lost in Cyberspace.</h2><p>This page does not exist. But your spaceship does.</p>
+<section class="cabinet" aria-label="Spaceship obstacle avoidance game">
+<div class="hud"><span>SCORE <span id="score">0000</span></span><span>BEST <span id="best">0000</span></span></div>
+<div class="screen"><canvas id="game" width="480" height="300" tabindex="0" aria-label="Spaceship game. Use left and right arrow keys or A and D to avoid obstacles."></canvas><div class="overlay" id="overlay"><strong id="message">SYSTEM READY</strong><p id="detail">Avoid the debris. Stay alive.</p><button id="start" type="button">Launch ship</button></div></div>
+</section><div class="controls"><span>← / → or A / D · Space to pause · Drag on mobile</span><div class="touch"><button type="button" id="left" aria-label="Move left">←</button><button type="button" id="right" aria-label="Move right">→</button><button type="button" id="pause" aria-label="Pause or resume">Ⅱ</button></div></div>
+<p class="foot">HTTP 404 / RESOURCE NOT FOUND</p></main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), canvas=$('game'), ctx=canvas.getContext('2d'), W=canvas.width,H=canvas.height;
+let theme;try{theme=localStorage.getItem('theme')}catch{};if(theme!=='light'&&theme!=='dark')theme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+let colors;function applyTheme(){document.documentElement.dataset.theme=theme;$('theme').textContent=theme==='dark'?'☀︎':'⏾';let s=getComputedStyle(document.documentElement);colors={bg:s.getPropertyValue('--bg').trim(),ink:s.getPropertyValue('--ink').trim(),accent:s.getPropertyValue('--accent').trim()};draw()}
+$('theme').onclick=()=>{theme=theme==='dark'?'light':'dark';try{localStorage.setItem('theme',theme)}catch{}applyTheme()};
+let best=0;try{best=Number(localStorage.getItem('lost404-best'))||0}catch{};
+let state='idle', ship={x:W/2,y:H-34}, debris=[], keys=new Set(), touchDir=0, elapsed=0, spawn=0, score=0,last=0,raf=0,drag=false;
+const stars=Array.from({length:55},()=>({x:Math.random()*W,y:Math.random()*H,s:Math.random()<.2?2:1}));
+const sprite=['00100','00100','01110','01110','11111','11011','10001'];
+function updateHUD(){$('score').textContent=String(score).padStart(4,'0');$('best').textContent=String(best).padStart(4,'0')}
+function draw(){if(!colors)return;ctx.fillStyle=colors.bg;ctx.fillRect(0,0,W,H);ctx.fillStyle=colors.ink;ctx.globalAlpha=.22;for(const s of stars)ctx.fillRect(Math.floor(s.x),Math.floor((s.y+elapsed*22)%H),s.s,s.s);ctx.globalAlpha=1;ctx.fillStyle=colors.accent;for(const o of debris){ctx.fillRect(Math.round(o.x),Math.round(o.y),o.w,o.h);ctx.fillStyle=colors.bg;ctx.fillRect(Math.round(o.x+4),Math.round(o.y+4),4,4);ctx.fillStyle=colors.accent}ctx.fillStyle=colors.ink;for(let y=0;y<sprite.length;y++)for(let x=0;x<5;x++)if(sprite[y][x]==='1')ctx.fillRect(Math.round(ship.x-10+x*4),ship.y-14+y*4,4,4);if(state==='running'){ctx.fillStyle=colors.accent;ctx.fillRect(Math.round(ship.x-2),ship.y+14,4,4+Math.floor(elapsed*20)%6)}}
+function show(title,detail,label){$('message').textContent=title;$('detail').textContent=detail;$('start').textContent=label;$('overlay').hidden=false}
+function start(){cancelAnimationFrame(raf);ship.x=W/2;debris=[];elapsed=0;spawn=.35;score=0;keys.clear();touchDir=0;state='running';$('overlay').hidden=true;updateHUD();canvas.focus({preventScroll:true});last=performance.now();raf=requestAnimationFrame(loop)}
+function end(){state='over';if(score>best){best=score;try{localStorage.setItem('lost404-best',String(best))}catch{}}updateHUD();show('SIGNAL LOST','Score: '+score+' — Try again?','Restart');$('start').focus({preventScroll:true})}
+function loop(now){if(state!=='running')return;const dt=Math.min(.04,(now-last)/1000);last=now;elapsed+=dt;score=Math.floor(elapsed*10);const dir=(keys.has('ArrowRight')||keys.has('d')?1:0)-(keys.has('ArrowLeft')||keys.has('a')?1:0);ship.x=Math.max(10,Math.min(W-10,ship.x+(dir||touchDir)*230*dt));spawn-=dt;if(spawn<=0){const w=20+Math.floor(Math.random()*7)*4;debris.push({x:Math.floor(Math.random()*(W-w)),y:-w,w,h:w,speed:100+Math.min(220,elapsed*4)+Math.random()*45});spawn=Math.max(.27,.8-elapsed*.012)}for(const o of debris){o.y+=o.speed*dt;if(ship.x+9>o.x&&ship.x-9<o.x+o.w&&ship.y+13>o.y&&ship.y-13<o.y+o.h){draw();end();return}}debris=debris.filter(o=>o.y<H);updateHUD();draw();raf=requestAnimationFrame(loop)}
+function pause(){if(state==='running'){state='paused';cancelAnimationFrame(raf);keys.clear();touchDir=0;drag=false;show('PAUSED','Your ship is safe for now.','Resume')}else if(state==='paused'){state='running';$('overlay').hidden=true;canvas.focus({preventScroll:true});last=performance.now();raf=requestAnimationFrame(loop)}}
+$('start').onclick=()=>state==='paused'?pause():start();$('pause').onclick=pause;
+window.addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;if(['ArrowLeft','ArrowRight','a','d',' '].includes(k)&&['running','paused'].includes(state)&&!['BUTTON','A'].includes(document.activeElement.tagName)){e.preventDefault();if(k===' '){if(!e.repeat)pause()}else keys.add(k)}});window.addEventListener('keyup',e=>keys.delete(e.key.length===1?e.key.toLowerCase():e.key));window.addEventListener('blur',()=>{if(state==='running')pause();keys.clear();touchDir=0});document.addEventListener('visibilitychange',()=>{if(document.hidden&&state==='running')pause()});
+function move(e){const r=canvas.getBoundingClientRect();ship.x=Math.max(10,Math.min(W-10,(e.clientX-r.left)*W/r.width))}canvas.addEventListener('pointerdown',e=>{if(state==='running'){drag=true;canvas.setPointerCapture(e.pointerId);move(e)}});canvas.addEventListener('pointermove',e=>{if(drag&&state==='running')move(e)});for(const ev of ['pointerup','pointercancel','lostpointercapture'])canvas.addEventListener(ev,()=>drag=false);
+for(const [id,dir] of [['left',-1],['right',1]]){const b=$(id);b.addEventListener('pointerdown',e=>{if(state==='running'){e.preventDefault();b.setPointerCapture(e.pointerId);touchDir=dir}});for(const ev of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(ev,()=>{if(touchDir===dir)touchDir=0})}
+applyTheme();updateHUD();
+</script></body></html>
+
+

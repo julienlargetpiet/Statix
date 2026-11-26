@@ -495,9 +495,18 @@ server {
     # --- Static site ---
     root ${STATIC_ROOT};
     index index.html;
+    error_page 404 /404.html;
 
+    #location / {
+    #    try_files \$uri \$uri/ /index.html;
+    #}
+ 
     location / {
-        try_files \$uri \$uri/ /index.html;
+        try_files $uri $uri/ =404;
+    }
+    
+    location = /404.html {
+        internal;
     }
 
     # --- Assets ---
