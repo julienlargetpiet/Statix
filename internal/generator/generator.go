@@ -193,6 +193,15 @@ func (g *Generator) Build() error {
 		return err
 	}
 
+    data, err := os.ReadFile("internal/templates/404.html")
+    if err != nil {
+        return err
+    }
+    
+    if err := os.WriteFile(filepath.Join(g.OutDir, "404.html"), data, 0o644); err != nil {
+        return err
+    }
+
     sort.Slice(g.Articles, func(i, j int) bool {
     	return g.Articles[i].ID > g.Articles[j].ID
     })
