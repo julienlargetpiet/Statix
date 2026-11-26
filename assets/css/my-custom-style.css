@@ -3443,7 +3443,7 @@ body:has(.article-summary.open)::after {
 
 @media (max-width: 1000px) {
     :root {
-        --toc-x: 0px;
+        --toc-x: calc(var(--frame-width) + 3px);
         --toc-button-top: 5.5rem;
         --toc-panel-top: 10rem;
         --toc-button-size: 34px;
@@ -3453,7 +3453,7 @@ body:has(.article-summary.open)::after {
     /* Normal-sized TOC */
 
     .article-summary {
-        left: 0;
+        left: var(--toc-x);
         top: var(--toc-panel-top);
 
         width: var(--toc-panel-width);
@@ -3467,7 +3467,7 @@ body:has(.article-summary.open)::after {
 
     .summary-toggle,
     .article-summary.open ~ .summary-toggle {
-        left: 0;
+        left: var(--toc-x);
         right: auto;
         top: var(--toc-button-top);
     }
@@ -4731,9 +4731,9 @@ article :is(h1, h2, h3, h4, h5, h6) a {
 
 :root {
     --frame-width: 16px;
+    --frame-width-horiz: 10px;
     --frame-color: #a47870;
 }
-
 
 :root[data-theme="dark"] {
     --frame-color: #825650;
@@ -4741,7 +4741,9 @@ article :is(h1, h2, h3, h4, h5, h6) a {
 
 body {
     min-height: 100vh;
-    border: var(--frame-width) solid var(--frame-color);
+
+    border: solid var(--frame-color);
+    border-width: var(--frame-width-horiz) var(--frame-width);
 }
 
 /* Fixed viewport frame */
@@ -4752,7 +4754,8 @@ html::before {
 
     inset: 0;
 
-    border: var(--frame-width) solid var(--frame-color);
+    border: solid var(--frame-color);
+    border-width: var(--frame-width-horiz) var(--frame-width);
 
     pointer-events: none;
     z-index: 110;
@@ -4761,7 +4764,16 @@ html::before {
 /* Keep the sticky navigation below the frame */
 
 .topbar {
-    top: var(--frame-width);
+    top: var(--frame-width-horiz);
+}
+
+/* Smaller desktop screens */
+
+@media (max-width: 1800px) {
+    :root {
+        --frame-width: 8px;
+        --frame-width-horiz: 5px;
+    }
 }
 
 /* Mobile */
@@ -4769,17 +4781,13 @@ html::before {
 @media (max-width: 600px) {
     :root {
         --frame-width: 4px;
+        --frame-width-horiz: 3px;
     }
 }
-
-@media (max-width: 1800px) {
-    :root {
-        --frame-width: 8px;
-    }
-}
-
 
 * {
   scrollbar-color: var(--accent) var(--frame-color);
 } 
+
+
 
