@@ -971,6 +971,8 @@ html,
   background: var(--bg-main);
 }
 
+
+
 ::-webkit-scrollbar-thumb {
   background-color: var(--accent);
   border-radius: 0;
@@ -981,10 +983,23 @@ html,
   background-color: var(--accent-hover);
 }
 
-* {
-  scrollbar-color: var(--accent) var(--bg-main);
+/*
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--brutal-ink);
+    border-radius: 0;
+    border: 3px solid var(--bg-main);
 }
 
+::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-strong);
+}
+
+* {
+    scrollbar-color: var(--brutal-ink) var(--bg-main);
+}
+
+*/
 
 /* 
 @supports (-moz-appearance: none) {
@@ -4707,4 +4722,64 @@ article :is(h1, h2, h3, h4, h5, h6) a {
         box-shadow: 6px 6px 0 var(--brutal-shadow);
     }
 }
+
+
+/* ==========================================
+   GLOBAL WEBSITE FRAME
+   ========================================== */
+
+
+:root {
+    --frame-width: 16px;
+    --frame-color: #a47870;
+}
+
+
+:root[data-theme="dark"] {
+    --frame-color: #825650;
+}
+
+body {
+    min-height: 100vh;
+    border: var(--frame-width) solid var(--frame-color);
+}
+
+/* Fixed viewport frame */
+
+html::before {
+    content: "";
+    position: fixed;
+
+    inset: 0;
+
+    border: var(--frame-width) solid var(--frame-color);
+
+    pointer-events: none;
+    z-index: 110;
+}
+
+/* Keep the sticky navigation below the frame */
+
+.topbar {
+    top: var(--frame-width);
+}
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    :root {
+        --frame-width: 4px;
+    }
+}
+
+@media (max-width: 1800px) {
+    :root {
+        --frame-width: 8px;
+    }
+}
+
+
+* {
+  scrollbar-color: var(--accent) var(--frame-color);
+} 
 
