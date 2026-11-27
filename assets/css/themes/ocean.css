@@ -2,7 +2,7 @@
 /* Regular */
 @font-face {
   font-family: "DejaVu Sans Mono";
-  src: url("/assets/fonts/DejaVu/DejaVuSansMono.woff2") format("woff2");
+  src: url("/assets/fonts/DejaVu/DejaVuSansMono-subset.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -11,7 +11,7 @@
 /* Bold */
 @font-face {
   font-family: "DejaVu Sans Mono";
-  src: url("/assets/fonts/DejaVu/DejaVuSansMono-Bold.woff2") format("woff2");
+  src: url("/assets/fonts/DejaVu/DejaVuSansMono-Bold-subset.woff2") format("woff2");
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -20,7 +20,7 @@
 /* Oblique */
 @font-face {
   font-family: "DejaVu Sans Mono";
-  src: url("/assets/fonts/DejaVu/DejaVuSansMono-Oblique.woff2") format("woff2");
+  src: url("/assets/fonts/DejaVu/DejaVuSansMono-Oblique-subset.woff2") format("woff2");
   font-weight: 400;
   font-style: italic;
   font-display: swap;
@@ -29,7 +29,7 @@
 /* Bold Oblique */
 @font-face {
   font-family: "DejaVu Sans Mono";
-  src: url("/assets/fonts/DejaVu/DejaVuSansMono-BoldOblique.woff2") format("woff2");
+  src: url("/assets/fonts/DejaVu/DejaVuSansMono-BoldOblique-subset.woff2") format("woff2");
   font-weight: 700;
   font-style: italic;
   font-display: swap;
