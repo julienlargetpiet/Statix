@@ -569,13 +569,18 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             const img = event.target.closest(
-                ".portrait-light, .portrait-dark, .pixel-portrait img, .matrix-img"
+                ".portrait-light, .portrait-dark, .pixel-portrait img, .matrix-img, .thumbnail-img"
             );
 
             if (!img) return;
 
             enlarged.src = img.currentSrc || img.src;
             enlarged.alt = img.alt || "";
+
+            enlarged.classList.toggle(
+                "thumbnail-img",
+                img.classList.contains("thumbnail-img")
+            );
 
             previousOverflow = document.body.style.overflow;
             document.body.style.overflow = "hidden";

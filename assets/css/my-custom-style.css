@@ -4805,4 +4805,9 @@ html::before {
 } 
 
 
+[data-theme="dark"] .thumbnail-img {
+    filter: invert(1);
+}
+
+
 
